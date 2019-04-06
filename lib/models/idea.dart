@@ -5,6 +5,7 @@ class Idea {
   String _title;
   String _description;
   String _url;
+  String source = "Reddit";
   int _votes;
 
   Idea.fromJson(Map<String, dynamic> data) {
@@ -16,4 +17,12 @@ class Idea {
   }
 
   get title => _title;
+
+  get description => _description;
+
+  int get votes => _votes;
+
+  String get url => _url;
+
+  double get timestamp => _timestamp;
 }
