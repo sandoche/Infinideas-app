@@ -30,12 +30,14 @@ class IdeaItem extends StatelessWidget {
             title,
             style: STYLE_TITLES
           ),
-          SizedBox(height: 10),
-          Text(
-            description,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis
-          ),
+          description != null ? Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Text(
+                description,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis
+              )
+          ) : Container(),
           SizedBox(height: 10),
           Row (
             children: <Widget>[
