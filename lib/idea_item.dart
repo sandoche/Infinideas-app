@@ -7,6 +7,7 @@ class IdeaItem extends StatelessWidget {
     this.title,
     this.description,
     this.url,
+    this.source,
     this.ups,
     this.date
   }) : super(key: key);
@@ -14,6 +15,7 @@ class IdeaItem extends StatelessWidget {
   final String title;
   final String description;
   final String url;
+  final String source;
   final String ups;
   final String date;
 
@@ -37,8 +39,11 @@ class IdeaItem extends StatelessWidget {
           SizedBox(height: 10),
           Row (
             children: <Widget>[
-              Text(date),
-              Text(ups)
+              Text(source, style: STYLE_METADATA),
+              Text(' • ', style: STYLE_METADATA),
+              Text(date, style: STYLE_METADATA),
+              Icon(IconData(0xe5c7, fontFamily: 'MaterialIcons'), color: COLOR_LIGHT),
+              Text(ups, style: STYLE_METADATA)
             ]
           )
         ],
