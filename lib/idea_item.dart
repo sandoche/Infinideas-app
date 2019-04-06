@@ -18,17 +18,36 @@ class IdeaItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Text(title),
-        Text(description),
-        Row (
-          children: <Widget>[
-            Text(date),
-            Text(ups)
-          ]
-        )
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 22.0,
+              fontWeight: FontWeight.w900
+            )
+          ),
+          SizedBox(height: 10),
+          Text(
+            description,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: const Color(0xff65638f)
+            )
+          ),
+          SizedBox(height: 10),
+          Row (
+            children: <Widget>[
+              Text(date),
+              Text(ups)
+            ]
+          )
+        ],
+      )
     );
   }
 }
