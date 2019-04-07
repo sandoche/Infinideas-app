@@ -3,16 +3,41 @@ import 'package:http/http.dart' show Client;
 import 'dart:async';
 
 import 'package:infinidea/models/idea.dart';
+import 'package:rxdart/rxdart.dart';
 
 class ApiProvider {
   Client client = Client();
+  String lightBulbAfter;
+  String newIdeaAfter;
 
-  Future<List<Idea>> fetchIdeas() async {
-    final response = await client
-        .get("https://www.reddit.com/r/lightbulb/new.json?sort=new");
+  Future<List<Idea>> fetchNewLightbulb() async {
+    String url =
+        'https://www.reddit.com/r/lightbulb/new.json?sort=new&count=25&after=';
+    if (lightBulbAfter != null) url += lightBulbAfter;
+    final response = await client.get(url);
     if (response.statusCode == 200) {
       List<Idea> ideas = new List();
-      json.decode(response.body)['data']['children'].forEach((item) {
+      Map<String, dynamic> data = json.decode(response.body)['data'];
+      lightBulbAfter = data['after'];
+      data['children'].forEach((item) {
+        ideas.add(Idea.fromJson(item['data']));
+      });
+      return ideas;
+    } else {
+      throw Exception('Failed to load post');
+    }
+  }
+
+  Future<List<Idea>> fetchNewAppIdeas() async {
+    String url =
+        'https://www.reddit.com/r/AppIdeas/new.json?sort=new&count=25&after=';
+    if (newIdeaAfter != null) url += newIdeaAfter;
+    final response = await client.get(url);
+    if (response.statusCode == 200) {
+      List<Idea> ideas = new List();
+      Map<String, dynamic> data = json.decode(response.body)['data'];
+      newIdeaAfter = data['after'];
+      data['children'].forEach((item) {
         ideas.add(Idea.fromJson(item['data']));
       });
       return ideas;

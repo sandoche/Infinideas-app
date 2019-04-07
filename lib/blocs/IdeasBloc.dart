@@ -1,21 +1,29 @@
 import 'package:infinidea/models/idea.dart';
+import 'package:infinidea/resources/api_provider.dart';
 
-import '../resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class IdeasBloc {
-  final _repository = Repository();
-  final _ideasSubject = PublishSubject<List<Idea>>();
+  final _apiProvider = ApiProvider();
+  List<Idea> listIdeas = List();
 
-  Observable<List<Idea>> get ideasStream => _ideasSubject.stream;
+  PublishSubject<List<Idea>> publishSubject = PublishSubject();
 
-  fetchIdeas() async {
-    List<Idea> ideas = await _repository.fetchIdeas();
-    _ideasSubject.sink.add(ideas);
-  }
+  Observable<List<Idea>> get ideasStream => publishSubject.stream;
 
-  dispose() {
-    _ideasSubject.close();
+  void fetch() {
+    Observable.combineLatest2(_apiProvider.fetchNewLightbulb().asStream(),
+        _apiProvider.fetchNewAppIdeas().asStream(),
+        (List<Idea> listA, List<Idea> listB) {
+      List<Idea> merged = new List();
+      merged.addAll(listA);
+      merged.addAll(listB);
+      merged.sort((a, b) => b.timestamp.compareTo(a.timestamp));
+      return merged;
+    }).listen((List<Idea> list) {
+      listIdeas.addAll(list);
+      publishSubject.sink.add(listIdeas);
+    });
   }
 }
 

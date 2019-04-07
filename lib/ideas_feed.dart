@@ -15,17 +15,19 @@ class IdeasFeed extends StatefulWidget {
 }
 
 class _IdeasFeedState extends State<IdeasFeed> {
-  @override
-  void initState() {
-    bloc.fetchIdeas();
-    _updateStatusBar();
-    super.initState();
-  }
+  ScrollController _scrollController = new ScrollController();
 
   @override
-  void dispose() {
-    bloc.dispose();
-    super.dispose();
+  void initState() {
+    _updateStatusBar();
+    super.initState();
+    bloc.fetch();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        bloc.fetch();
+      }
+    });
   }
 
   void _updateStatusBar() {
@@ -44,6 +46,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return CustomScrollView(
+                  controller: _scrollController,
                   slivers: <Widget>[
                     SliverAppBar(
                       flexibleSpace: const FlexibleSpaceBar(
