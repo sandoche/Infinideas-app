@@ -14,6 +14,19 @@ class IdeasFeed extends StatefulWidget {
 }
 
 class _IdeasFeedState extends State<IdeasFeed> {
+  ScrollController _scrollController = new ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    bloc.fetch();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        bloc.fetch();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,27 +36,27 @@ class _IdeasFeedState extends State<IdeasFeed> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return CustomScrollView(
+                  controller: _scrollController,
                   slivers: <Widget>[
                     SliverAppBar(
                       flexibleSpace: const FlexibleSpaceBar(
                           centerTitle: false,
-                          titlePadding: const EdgeInsets.only(left: 26, bottom: 10),
-                          title: Text('InfinIdea', style: STYLE_APP_TITLE)
-                      ),
+                          titlePadding:
+                              const EdgeInsets.only(left: 26, bottom: 10),
+                          title: Text('InfinIdea', style: STYLE_APP_TITLE)),
                       backgroundColor: Colors.white10,
                       expandedHeight: 140.0,
                     ),
-                    SliverList (
-                      delegate: new SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
-                          return IdeaItem(
-                            idea: snapshot.data[index],
-                          );
-                        }
-                      )
-                    )
-                ]
-              );
+                    SliverList(
+                        delegate: new SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        return IdeaItem(
+                          idea: snapshot.data[index],
+                        );
+                      },
+                      childCount: snapshot.data.length,
+                    ))
+                  ]);
             } else {
               return Center(child: CircularProgressIndicator());
             }
