@@ -14,6 +14,11 @@ class IdeaItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            Chip(
+                label: Text(idea.votes.toString() + ' UPVOTES'),
+                backgroundColor: getLabelBackgroundColor(idea.votes),
+                labelStyle: STYLE_TEXT_TAG
+            ),
             Text(idea.title, style: STYLE_TITLES),
             idea.description != ''
                 ? Padding(
@@ -26,10 +31,6 @@ class IdeaItem extends StatelessWidget {
               Text(idea.source, style: STYLE_METADATA),
               Text(' • ', style: STYLE_METADATA),
               Text(idea.timestamp.toString(), style: STYLE_METADATA),
-              Expanded(child: Text('')),
-              Icon(IconData(0xe5c7, fontFamily: 'MaterialIcons'),
-                  color: COLOR_LIGHT),
-              Text(idea.votes.toString(), style: STYLE_METADATA)
             ])
           ],
         ));
