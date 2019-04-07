@@ -3,6 +3,7 @@ import 'package:infinidea/blocs/IdeasBloc.dart';
 import 'package:infinidea/models/idea.dart';
 import 'idea_item.dart';
 import 'styles.dart';
+import 'package:flutter/services.dart';
 
 class IdeasFeed extends StatefulWidget {
   IdeasFeed({Key key, this.title}) : super(key: key);
@@ -17,6 +18,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
   @override
   void initState() {
     bloc.fetchIdeas();
+    _updateStatusBar();
     super.initState();
   }
 
@@ -24,6 +26,14 @@ class _IdeasFeedState extends State<IdeasFeed> {
   void dispose() {
     bloc.dispose();
     super.dispose();
+  }
+
+  void _updateStatusBar() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Colors.white10,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.dark
+    ));
   }
 
   @override
