@@ -5,18 +5,8 @@ import 'package:rxdart/rxdart.dart';
 
 class IdeasBloc {
   final _repository = Repository();
-  final _ideasSubject = PublishSubject<List<Idea>>();
 
-  Observable<List<Idea>> get ideasStream => _ideasSubject.stream;
-
-  fetchIdeas() async {
-    List<Idea> ideas = await _repository.fetchIdeas();
-    _ideasSubject.sink.add(ideas);
-  }
-
-  dispose() {
-    _ideasSubject.close();
-  }
+  Observable<List<Idea>> get ideasStream => _repository.fetchRedditIdeas();
 }
 
 final bloc = IdeasBloc();

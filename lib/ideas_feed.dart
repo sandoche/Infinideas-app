@@ -13,17 +13,6 @@ class IdeasFeed extends StatefulWidget {
 }
 
 class _IdeasFeedState extends State<IdeasFeed> {
-  @override
-  void initState() {
-    bloc.fetchIdeas();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    bloc.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
