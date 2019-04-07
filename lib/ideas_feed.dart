@@ -36,9 +36,10 @@ class _IdeasFeedState extends State<IdeasFeed> {
               return CustomScrollView(
                   slivers: <Widget>[
                     SliverAppBar(
-                      title: Padding(
-                        padding: const EdgeInsets.only(top: 30, left: 10),
-                        child: Text('InfinIdea', style: STYLE_APP_TITLE)
+                      flexibleSpace: const FlexibleSpaceBar(
+                          centerTitle: false,
+                          titlePadding: const EdgeInsets.only(left: 26, bottom: 10),
+                          title: Text('InfinIdea', style: STYLE_APP_TITLE)
                       ),
                       backgroundColor: Colors.white10,
                       expandedHeight: 140.0,
