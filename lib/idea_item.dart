@@ -15,7 +15,7 @@ class IdeaItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(idea.title, style: STYLE_TITLES),
-            idea.description != null
+            idea.description != ''
                 ? Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: Text(idea.description,

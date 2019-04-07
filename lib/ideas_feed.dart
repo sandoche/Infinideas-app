@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:infinidea/blocs/IdeasBloc.dart';
 import 'package:infinidea/models/idea.dart';
 import 'idea_item.dart';
+import 'styles.dart';
 
 class IdeasFeed extends StatefulWidget {
   IdeasFeed({Key key, this.title}) : super(key: key);
@@ -17,20 +18,31 @@ class _IdeasFeedState extends State<IdeasFeed> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: StreamBuilder<List<Idea>>(
           stream: bloc.ideasStream,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (context, index) {
-                  return IdeaItem(
-                    idea: snapshot.data[index],
-                  );
-                },
+              return CustomScrollView(
+                  slivers: <Widget>[
+                    SliverAppBar(
+                      flexibleSpace: const FlexibleSpaceBar(
+                          centerTitle: false,
+                          titlePadding: const EdgeInsets.only(left: 26, bottom: 10),
+                          title: Text('InfinIdea', style: STYLE_APP_TITLE)
+                      ),
+                      backgroundColor: Colors.white10,
+                      expandedHeight: 140.0,
+                    ),
+                    SliverList (
+                      delegate: new SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          return IdeaItem(
+                            idea: snapshot.data[index],
+                          );
+                        }
+                      )
+                    )
+                ]
               );
             } else {
               return Center(child: CircularProgressIndicator());
