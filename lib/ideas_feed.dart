@@ -37,7 +37,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
                   slivers: <Widget>[
                     SliverAppBar(
                       title: Text('InfinIdea', style: STYLE_APP_TITLE),
-                      backgroundColor: Colors.white,
+                      backgroundColor: Colors.white10,
                       expandedHeight: 100.0,
                     ),
                     SliverList (
