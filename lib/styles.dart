@@ -14,6 +14,6 @@ const STYLE_METADATA = TextStyle(
 
 const STYLE_APP_TITLE = TextStyle(
   color: COLOR_DARK,
-  fontSize: 36.0,
+  fontSize: 24.0,
   fontWeight: FontWeight.w900
 );
