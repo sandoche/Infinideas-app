@@ -50,7 +50,8 @@ class _IdeasFeedState extends State<IdeasFeed> {
                           return IdeaItem(
                             idea: snapshot.data[index],
                           );
-                        }
+                        },
+                        childCount: snapshot.data.length
                       )
                     )
                 ]
