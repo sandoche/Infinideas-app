@@ -28,20 +28,27 @@ class _IdeasFeedState extends State<IdeasFeed> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: StreamBuilder<List<Idea>>(
           stream: bloc.ideasStream,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (context, index) {
-                  return IdeaItem(
-                    idea: snapshot.data[index],
-                  );
-                },
+              return CustomScrollView(
+                  slivers: <Widget>[
+                    SliverAppBar(
+                      title: Text('InfinIdea'),
+                      backgroundColor: Colors.black,
+                      expandedHeight: 200.0,
+                    ),
+                    SliverList (
+                      delegate: new SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          return IdeaItem(
+                            idea: snapshot.data[index],
+                          );
+                        }
+                      )
+                    )
+                ]
               );
             } else {
               return Center(child: CircularProgressIndicator());
