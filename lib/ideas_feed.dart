@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:infinidea/blocs/IdeasBloc.dart';
 import 'package:infinidea/models/idea.dart';
 import 'idea_item.dart';
+import 'styles.dart';
 
 class IdeasFeed extends StatefulWidget {
   IdeasFeed({Key key, this.title}) : super(key: key);
@@ -35,9 +36,9 @@ class _IdeasFeedState extends State<IdeasFeed> {
               return CustomScrollView(
                   slivers: <Widget>[
                     SliverAppBar(
-                      title: Text('InfinIdea'),
-                      backgroundColor: Colors.black,
-                      expandedHeight: 200.0,
+                      title: Text('InfinIdea', style: STYLE_APP_TITLE),
+                      backgroundColor: Colors.white,
+                      expandedHeight: 100.0,
                     ),
                     SliverList (
                       delegate: new SliverChildBuilderDelegate(
