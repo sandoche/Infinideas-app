@@ -27,3 +27,13 @@ const STYLE_APP_TITLE = TextStyle(
   fontSize: 24.0,
   fontWeight: FontWeight.w900
 );
+
+getLabelBackgroundColor(count) {
+  var result = BACKGROUND_TAG_LOW;
+  if(count <= 10 && count > 0) {
+    result = BACKGROUND_TAG_MEDIUM;
+  } else if (count > 10) {
+    result = BACKGROUND_TAG_HIGH;
+  }
+  return result;
+}

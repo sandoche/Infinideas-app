@@ -16,7 +16,7 @@ class IdeaItem extends StatelessWidget {
           children: <Widget>[
             Chip(
                 label: Text(idea.votes.toString() + ' UPVOTES'),
-                backgroundColor: BACKGROUND_TAG_MEDIUM,
+                backgroundColor: getLabelBackgroundColor(idea.votes),
                 labelStyle: STYLE_TEXT_TAG
             ),
             Text(idea.title, style: STYLE_TITLES),
