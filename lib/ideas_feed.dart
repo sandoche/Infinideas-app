@@ -29,14 +29,6 @@ class _IdeasFeedState extends State<IdeasFeed> {
     });
   }
 
-//  void _updateStatusBar() {
-//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-//        statusBarColor: Colors.white10,
-//        statusBarIconBrightness: Brightness.dark,
-//        statusBarBrightness: Brightness.dark
-//    ));
-//  }
-
   Future<Null> _refresh() {
     return Future<Null>.value(null);
   }
