@@ -19,7 +19,6 @@ class _IdeasFeedState extends State<IdeasFeed> {
 
   @override
   void initState() {
-    _updateStatusBar();
     super.initState();
     bloc.fetch();
     _scrollController.addListener(() {
@@ -30,13 +29,13 @@ class _IdeasFeedState extends State<IdeasFeed> {
     });
   }
 
-  void _updateStatusBar() {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Colors.white10,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.dark
-    ));
-  }
+//  void _updateStatusBar() {
+//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+//        statusBarColor: Colors.white10,
+//        statusBarIconBrightness: Brightness.dark,
+//        statusBarBrightness: Brightness.dark
+//    ));
+//  }
 
   Future<Null> _refresh() {
     return Future<Null>.value(null);
