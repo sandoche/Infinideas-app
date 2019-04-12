@@ -11,9 +11,13 @@ class IdeasBloc {
 
   Observable<List<Idea>> get ideasStream => publishSubject.stream;
 
-  void fetch() {
-    Observable.combineLatest2(_apiProvider.fetchNewLightbulb().asStream(),
-        _apiProvider.fetchNewAppIdeas().asStream(),
+  void fetch(bool refresh) {
+    if(refresh){
+      listIdeas.clear();
+    }
+    Observable.combineLatest2(
+        _apiProvider.fetchNewLightbulb(refresh).asStream(),
+        _apiProvider.fetchNewAppIdeas(refresh).asStream(),
         (List<Idea> listA, List<Idea> listB) {
       List<Idea> merged = new List();
       merged.addAll(listA);

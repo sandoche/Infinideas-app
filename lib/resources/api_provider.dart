@@ -10,10 +10,10 @@ class ApiProvider {
   String lightBulbAfter;
   String newIdeaAfter;
 
-  Future<List<Idea>> fetchNewLightbulb() async {
+  Future<List<Idea>> fetchNewLightbulb(bool refresh) async {
     String url =
         'https://www.reddit.com/r/lightbulb/new.json?sort=new&count=25&after=';
-    if (lightBulbAfter != null) url += lightBulbAfter;
+    if (lightBulbAfter != null && !refresh) url += lightBulbAfter;
     final response = await client.get(url);
     if (response.statusCode == 200) {
       List<Idea> ideas = new List();
@@ -28,10 +28,10 @@ class ApiProvider {
     }
   }
 
-  Future<List<Idea>> fetchNewAppIdeas() async {
+  Future<List<Idea>> fetchNewAppIdeas(bool refresh) async {
     String url =
         'https://www.reddit.com/r/AppIdeas/new.json?sort=new&count=25&after=';
-    if (newIdeaAfter != null) url += newIdeaAfter;
+    if (newIdeaAfter != null && !refresh) url += newIdeaAfter;
     final response = await client.get(url);
     if (response.statusCode == 200) {
       List<Idea> ideas = new List();
