@@ -11,11 +11,11 @@ class IdeasBloc {
 
   Observable<List<Idea>> get ideasStream => publishSubject.stream;
 
-  void fetch(bool refresh) {
-    if(refresh){
+  Future<Null> fetch(bool refresh) {
+    if (refresh) {
       listIdeas.clear();
     }
-    Observable.combineLatest2(
+    return Observable.combineLatest2(
         _apiProvider.fetchNewLightbulb(refresh).asStream(),
         _apiProvider.fetchNewAppIdeas(refresh).asStream(),
         (List<Idea> listA, List<Idea> listB) {
@@ -27,7 +27,7 @@ class IdeasBloc {
     }).listen((List<Idea> list) {
       listIdeas.addAll(list);
       publishSubject.sink.add(listIdeas);
-    });
+    }).asFuture();
   }
 }
 

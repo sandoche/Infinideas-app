@@ -30,8 +30,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
   }
 
   Future<Null> _refresh() {
-    bloc.fetch(true);
-    return Future<Null>.value(null);
+    return bloc.fetch(true);
   }
 
   @override
