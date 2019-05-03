@@ -20,17 +20,17 @@ class _IdeasFeedState extends State<IdeasFeed> {
   @override
   void initState() {
     super.initState();
-    bloc.fetch();
+    bloc.fetch(true);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        bloc.fetch();
+        bloc.fetch(false);
       }
     });
   }
 
   Future<Null> _refresh() {
-    return Future<Null>.value(null);
+    return bloc.fetch(true);
   }
 
   @override
@@ -43,30 +43,25 @@ class _IdeasFeedState extends State<IdeasFeed> {
               return RefreshIndicator(
                   onRefresh: _refresh,
                   child: CustomScrollView(
-                    controller: _scrollController,
-                    slivers: <Widget>[
-                      SliverAppBar(
-                        flexibleSpace: const FlexibleSpaceBar(
-                            centerTitle: false,
-                            titlePadding: const EdgeInsets.only(left: 26, bottom: 40),
-                            title: Text('InfinIdea', style: STYLE_APP_TITLE)
+                      controller: _scrollController,
+                      slivers: <Widget>[
+                        SliverAppBar(
+                          flexibleSpace: const FlexibleSpaceBar(
+                              centerTitle: false,
+                              titlePadding:
+                                  const EdgeInsets.only(left: 26, bottom: 40),
+                              title: Text('InfinIdea', style: STYLE_APP_TITLE)),
+                          backgroundColor: Colors.white10,
+                          expandedHeight: 150.0,
                         ),
-                        backgroundColor: Colors.white10,
-                        expandedHeight: 150.0,
-                      ),
-                      SliverList (
-                        delegate: new SliverChildBuilderDelegate(
-                          (BuildContext context, int index) {
-                            return IdeaItem(
-                              idea: snapshot.data[index],
-                            );
-                          },
-                          childCount: snapshot.data.length
-                        )
-                      )
-                  ]
-                )
-              );
+                        SliverList(
+                            delegate: new SliverChildBuilderDelegate(
+                                (BuildContext context, int index) {
+                          return IdeaItem(
+                            idea: snapshot.data[index],
+                          );
+                        }, childCount: snapshot.data.length))
+                      ]));
             } else {
               return Center(child: CircularProgressIndicator());
             }
