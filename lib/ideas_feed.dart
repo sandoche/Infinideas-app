@@ -4,6 +4,8 @@ import 'package:infinidea/models/idea.dart';
 import 'idea_item.dart';
 import 'styles.dart';
 import 'package:flutter/services.dart';
+import 'package:dynamic_theme/dynamic_theme.dart';
+import 'themes.dart';
 
 class IdeasFeed extends StatefulWidget {
   IdeasFeed({Key key, this.title}) : super(key: key);
@@ -31,6 +33,10 @@ class _IdeasFeedState extends State<IdeasFeed> {
 
   Future<Null> _refresh() {
     return bloc.fetch(true);
+  }
+
+  void toggleTheme() {
+    DynamicTheme.of(context).setThemeData(Theme.of(context).brightness == Brightness.dark ? lightTheme : darkTheme);
   }
 
   @override
