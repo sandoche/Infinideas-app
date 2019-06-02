@@ -10,7 +10,7 @@ var darkTheme = new ThemeData(
 
 getSliverAppBarBackground(isDarkmode) {
   if(isDarkmode) {
-    return Colors.black12;
+    return Color(0xff303030);
   } else {
     return Colors.white10;
   }
