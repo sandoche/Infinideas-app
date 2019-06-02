@@ -59,6 +59,15 @@ class _IdeasFeedState extends State<IdeasFeed> {
                               title: Text('InfinIdea', style: STYLE_APP_TITLE)),
                           backgroundColor: Colors.white10,
                           expandedHeight: 150.0,
+                          actions: <Widget>[
+                            IconButton(
+                              icon: Icon(Icons.brightness_3),
+                              tooltip: 'Toggle Theme',
+                              onPressed: () {
+                                toggleTheme();
+                              },
+                            ),
+                          ]
                         ),
                         SliverList(
                             delegate: new SliverChildBuilderDelegate(
