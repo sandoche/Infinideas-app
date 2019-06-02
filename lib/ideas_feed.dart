@@ -35,8 +35,12 @@ class _IdeasFeedState extends State<IdeasFeed> {
     return bloc.fetch(true);
   }
 
+  bool isDarkTheme() {
+    return Theme.of(context).brightness == Brightness.dark;
+  }
+
   void toggleTheme() {
-    DynamicTheme.of(context).setThemeData(Theme.of(context).brightness == Brightness.dark ? lightTheme : darkTheme);
+    DynamicTheme.of(context).setThemeData(isDarkTheme() ? lightTheme : darkTheme);
   }
 
   @override
@@ -57,7 +61,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
                               titlePadding:
                                   const EdgeInsets.only(left: 26, bottom: 40),
                               title: Text('InfinIdea', style: STYLE_APP_TITLE)),
-                          backgroundColor: Colors.white10,
+                          backgroundColor: getSliverAppBarBackground(isDarkTheme()),
                           expandedHeight: 150.0,
                           actions: <Widget>[
                             IconButton(
