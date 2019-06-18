@@ -43,3 +43,11 @@ getLabelBackgroundColor(count) {
   }
   return result;
 }
+
+getSliverAppBarTitleStyle(isDarkmode) {
+  if(isDarkmode) {
+    return STYLE_APP_TITLE_DARK_THEME;
+  } else {
+    return STYLE_APP_TITLE_LIGHT_THEME;
+  }
+}

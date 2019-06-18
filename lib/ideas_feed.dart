@@ -42,9 +42,6 @@ class _IdeasFeedState extends State<IdeasFeed> {
   void toggleTheme() {
     DynamicTheme.of(context)
         .setThemeData(isDarkTheme() ? lightTheme : darkTheme);
-    setState(() {
-//      to reload AppBarTitle and update title style
-    });
   }
 
   @override
@@ -60,11 +57,11 @@ class _IdeasFeedState extends State<IdeasFeed> {
                       controller: _scrollController,
                       slivers: <Widget>[
                         SliverAppBar(
-                            flexibleSpace: const FlexibleSpaceBar(
+                            flexibleSpace: FlexibleSpaceBar(
                                 centerTitle: false,
                                 titlePadding:
                                     const EdgeInsets.only(left: 26, bottom: 40),
-                                title: AppBarTitle()),
+                                title: Text('InfinIdea', style: getSliverAppBarTitleStyle(isDarkTheme()))),
                             backgroundColor:
                                 getSliverAppBarBackground(isDarkTheme()),
                             expandedHeight: 150.0,
@@ -90,28 +87,5 @@ class _IdeasFeedState extends State<IdeasFeed> {
             }
           }),
     );
-  }
-}
-
-class AppBarTitle extends StatefulWidget {
-  const AppBarTitle();
-
-  @override
-  AppBarTitleState createState() => AppBarTitleState();
-}
-
-class AppBarTitleState extends State<AppBarTitle> {
-  // duplicate method :/
-  bool isDarkTheme() {
-    return Theme.of(context).brightness == Brightness.dark;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (isDarkTheme()) {
-      return Text('InfinIdea', style: STYLE_APP_TITLE_DARK_THEME);
-    } else {
-      return Text('InfinIdea', style: STYLE_APP_TITLE_LIGHT_THEME);
-    }
   }
 }
