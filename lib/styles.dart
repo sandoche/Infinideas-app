@@ -22,8 +22,14 @@ const STYLE_METADATA = TextStyle(
   color: COLOR_LIGHT
 );
 
-const STYLE_APP_TITLE = TextStyle(
+const STYLE_APP_TITLE_LIGHT_THEME = TextStyle(
   color: COLOR_DARK,
+  fontSize: 24.0,
+  fontWeight: FontWeight.w900
+);
+
+const STYLE_APP_TITLE_DARK_THEME = TextStyle(
+  color: Colors.white,
   fontSize: 24.0,
   fontWeight: FontWeight.w900
 );
