@@ -67,7 +67,8 @@ class _IdeasFeedState extends State<IdeasFeed> {
                             expandedHeight: 150.0,
                             actions: <Widget>[
                               IconButton(
-                                icon: Icon(Icons.brightness_3),
+                                icon: Icon(Icons.brightness_6),
+                                color: getMenuIconColor(isDarkTheme()),
                                 tooltip: 'Toggle Theme',
                                 onPressed: () {
                                   toggleTheme();

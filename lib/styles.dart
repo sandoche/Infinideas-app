@@ -51,3 +51,11 @@ getSliverAppBarTitleStyle(isDarkmode) {
     return STYLE_APP_TITLE_LIGHT_THEME;
   }
 }
+
+getMenuIconColor(isDarkmode) {
+  if(isDarkmode) {
+    return Colors.white;
+  } else {
+    return COLOR_DARK;
+  }
+}
