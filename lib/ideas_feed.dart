@@ -79,6 +79,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
                             delegate: new SliverChildBuilderDelegate(
                                 (BuildContext context, int index) {
                           return IdeaItem(
+                            isDarkTheme: isDarkTheme(),
                             idea: snapshot.data[index],
                           );
                         }, childCount: snapshot.data.length))

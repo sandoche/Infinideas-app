@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 const COLOR_LIGHT = Color(0xff65638f);
+const COLOR_MEDIUM = Color(0xffb1aee2);
 const COLOR_DARK = Color(0xff000000);
 
 const BACKGROUND_TAG_LOW = Color(0xfffab95b);
@@ -18,8 +19,12 @@ const STYLE_TITLES = TextStyle(
   fontWeight: FontWeight.w900
 );
 
-const STYLE_METADATA = TextStyle(
+const STYLE_METADATA_LIGHT_THEME = TextStyle(
   color: COLOR_LIGHT
+);
+
+const STYLE_METADATA_DARK_THEME = TextStyle(
+    color: COLOR_MEDIUM
 );
 
 const STYLE_APP_TITLE_LIGHT_THEME = TextStyle(
@@ -57,5 +62,13 @@ getMenuIconColor(isDarkmode) {
     return Colors.white;
   } else {
     return COLOR_DARK;
+  }
+}
+
+getStyleMeta(isDarkmode) {
+  if(isDarkmode) {
+    return STYLE_METADATA_DARK_THEME;
+  } else {
+    return STYLE_METADATA_LIGHT_THEME;
   }
 }

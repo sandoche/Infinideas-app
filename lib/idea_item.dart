@@ -6,8 +6,9 @@ import 'package:share/share.dart';
 
 class IdeaItem extends StatelessWidget {
   final Idea idea;
+  final bool isDarkTheme;
 
-  const IdeaItem({Key key, this.idea}) : super(key: key);
+  const IdeaItem({Key key, this.idea, this.isDarkTheme}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +34,9 @@ class IdeaItem extends StatelessWidget {
                   : Container(),
               SizedBox(height: 10),
               Row(children: <Widget>[
-                Text(idea.source, style: STYLE_METADATA),
-                Text(' • ', style: STYLE_METADATA),
-                Text(idea.timestamp.toString(), style: STYLE_METADATA),
+                Text(idea.source, style: getStyleMeta(isDarkTheme)),
+                Text(' • ', style: getStyleMeta(isDarkTheme)),
+                Text(idea.timestamp.toString(), style: getStyleMeta(isDarkTheme)),
               ])
             ],
           )),
