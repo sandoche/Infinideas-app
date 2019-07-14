@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'styles.dart';
 
 var lightTheme = new ThemeData(
-    brightness: Brightness.light
+    brightness: Brightness.light,
+    accentColor: Colors.red
 );
 
 var darkTheme = new ThemeData(
@@ -49,5 +50,21 @@ getStyleMeta(isDarkmode) {
     return STYLE_METADATA_DARK_THEME;
   } else {
     return STYLE_METADATA_LIGHT_THEME;
+  }
+}
+
+getAppBarBackground(isDarkmode) {
+  if (isDarkmode) {
+    return Color(0xff303030);
+  } else {
+    return COLOR_LIGHT;
+  }
+}
+
+getMenuTextStyle(isDarkmode) {
+  if(isDarkmode) {
+    return STYLE_TEXT_DARK_THEME;
+  } else {
+    return COLOR_PRIMARY;
   }
 }

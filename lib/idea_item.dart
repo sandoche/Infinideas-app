@@ -15,7 +15,7 @@ class IdeaItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        _openWebView(context, idea);
+        _openWebView(context, idea, isDarkTheme);
       },
       child: Padding(
           padding: const EdgeInsets.all(28.0),
@@ -44,7 +44,7 @@ class IdeaItem extends StatelessWidget {
     );
   }
 
-  void _openWebView(BuildContext context, Idea idea) {
+  void _openWebView(BuildContext context, Idea idea, bool isDarkTheme) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) {
@@ -52,6 +52,7 @@ class IdeaItem extends StatelessWidget {
             url: idea.url,
             appBar: new AppBar(
               title: new Text(idea.title),
+              backgroundColor: getAppBarBackground(isDarkTheme),
               actions: <Widget>[
                 IconButton(
                   icon: Icon(Icons.share),
