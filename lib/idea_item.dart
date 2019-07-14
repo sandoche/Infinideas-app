@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:infinidea/models/idea.dart';
-import 'styles.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:share/share.dart';
+import 'styles.dart';
+import 'themes.dart';
 
 class IdeaItem extends StatelessWidget {
   final Idea idea;
@@ -55,7 +56,7 @@ class IdeaItem extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.share),
                   onPressed: () {
-                    Share.share('Hey, I just discovered this cool repository '
+                    Share.share('Hey, I just discovered this cool idea '
                         'thanks to the Infinidea app (https://infinidea.learn.uno) '
                         '💡 ${idea.url}');
                   },
