@@ -1,4 +1,9 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:in_app_purchase/billing_client_wrappers.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:infinidea/blocs/IdeasBloc.dart';
 import 'package:infinidea/models/idea.dart';
 import 'idea_item.dart';
@@ -9,7 +14,6 @@ import 'themes.dart';
 
 class IdeasFeed extends StatefulWidget {
   IdeasFeed({Key key, this.title}) : super(key: key);
-
   final String title;
 
   @override
@@ -18,6 +22,16 @@ class IdeasFeed extends StatefulWidget {
 
 class _IdeasFeedState extends State<IdeasFeed> {
   ScrollController _scrollController = new ScrollController();
+
+  StreamSubscription<List<PurchaseDetails>> _subscription;
+
+  ProductDetails productDetails;
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -29,6 +43,17 @@ class _IdeasFeedState extends State<IdeasFeed> {
         bloc.fetch(false);
       }
     });
+    final Stream purchaseUpdates =
+        InAppPurchaseConnection.instance.purchaseUpdatedStream;
+    _subscription = purchaseUpdates.listen(
+            (purchases) {
+          print('purchases' + purchases);
+        },
+        onDone: () {},
+        onError: (error) {
+          print('error' + error);
+        });
+    retrieveProducts();
   }
 
   Future<Null> _refresh() {
@@ -36,10 +61,67 @@ class _IdeasFeedState extends State<IdeasFeed> {
   }
 
   bool isDarkTheme() {
-    return Theme.of(context).brightness == Brightness.dark;
+    return Theme
+        .of(context)
+        .brightness == Brightness.dark;
+  }
+
+  retrieveProducts() async {
+    final bool available = await InAppPurchaseConnection.instance.isAvailable();
+    final QueryPurchaseDetailsResponse response =
+    await InAppPurchaseConnection.instance.queryPastPurchases();
+    if (response.error != null) {
+      // Handle the error.
+    }
+    if (!available) {
+      Set<String> _kIds = <String>['darktheme'].toSet();
+    } else {
+      Set<String> _kIds = <String>['darktheme'].toSet();
+      final ProductDetailsResponse response =
+      await InAppPurchaseConnection.instance.queryProductDetails(_kIds);
+      if (response.notFoundIDs.isNotEmpty) {}
+
+      productDetails = response.productDetails[0];
+    }
+  }
+
+  void purchaseItem(ProductDetails productDetails) {
+    print('purchase item' + productDetails.toString());
+    final PurchaseParam purchaseParam =
+    PurchaseParam(productDetails: productDetails);
+    if ((Platform.isIOS &&
+        productDetails.skProduct.subscriptionPeriod == null) ||
+        (Platform.isAndroid && productDetails.skuDetail.type == SkuType.subs)) {
+      InAppPurchaseConnection.instance
+          .buyConsumable(purchaseParam: purchaseParam);
+    } else {
+      InAppPurchaseConnection.instance
+          .buyNonConsumable(purchaseParam: purchaseParam);
+    }
   }
 
   void toggleTheme() {
+    purchaseItem(productDetails);
+//    showDialog(
+//      context: context,
+//      builder: (BuildContext context) {
+//        // return object of type Dialog
+//        return AlertDialog(
+//          title: new Text("Alert Dialog title"),
+//          content: new Text("Alert Dialog body"),
+//          actions: <Widget>[
+//            // usually buttons at the bottom of the dialog
+//            new FlatButton(
+//              child: new Text("Close"),
+//              onPressed: () {
+//                Navigator.of(context).pop();
+//              },
+//            ),
+//          ],
+//        );
+//      },
+//    );
+
     DynamicTheme.of(context)
         .setThemeData(isDarkTheme() ? lightTheme : darkTheme);
   }
@@ -60,10 +142,12 @@ class _IdeasFeedState extends State<IdeasFeed> {
                             flexibleSpace: FlexibleSpaceBar(
                                 centerTitle: false,
                                 titlePadding:
-                                    const EdgeInsets.only(left: 26, bottom: 40),
-                                title: Text('InfinIdea', style: getSliverAppBarTitleStyle(isDarkTheme()))),
+                                const EdgeInsets.only(left: 26, bottom: 40),
+                                title: Text('InfinIdea',
+                                    style: getSliverAppBarTitleStyle(
+                                        isDarkTheme()))),
                             backgroundColor:
-                                getSliverAppBarBackground(isDarkTheme()),
+                            getSliverAppBarBackground(isDarkTheme()),
                             expandedHeight: 150.0,
                             actions: <Widget>[
                               IconButton(
@@ -76,11 +160,11 @@ class _IdeasFeedState extends State<IdeasFeed> {
                             ]),
                         SliverList(
                             delegate: new SliverChildBuilderDelegate(
-                                (BuildContext context, int index) {
-                          return IdeaItem(
-                            idea: snapshot.data[index],
-                          );
-                        }, childCount: snapshot.data.length))
+                                    (BuildContext context, int index) {
+                                  return IdeaItem(
+                                    idea: snapshot.data[index],
+                                  );
+                                }, childCount: snapshot.data.length))
                       ]));
             } else {
               return Center(child: CircularProgressIndicator());
