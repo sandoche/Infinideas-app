@@ -4,6 +4,7 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:share/share.dart';
 import 'styles.dart';
 import 'themes.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class IdeaItem extends StatelessWidget {
   final Idea idea;
@@ -13,6 +14,7 @@ class IdeaItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return InkWell(
       onTap: () {
         _openWebView(context, idea, isDarkTheme);
@@ -37,7 +39,7 @@ class IdeaItem extends StatelessWidget {
               Row(children: <Widget>[
                 Text(idea.source, style: getStyleMeta(isDarkTheme)),
                 Text(' • ', style: getStyleMeta(isDarkTheme)),
-                Text(idea.timestamp.toString(), style: getStyleMeta(isDarkTheme)),
+                Text(timeago.format(new DateTime.fromMicrosecondsSinceEpoch(idea.timestamp.toInt() * 1000000)), style: getStyleMeta(isDarkTheme)),
               ])
             ],
           )),

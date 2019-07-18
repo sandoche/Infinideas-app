@@ -24,6 +24,7 @@ dependencies:
   flutter_webview_plugin: ^0.3.3
   share: ^0.6.1
   dynamic_theme: ^1.0.1
+  timeago: ^2.0.17
 
 dev_dependencies:
   flutter_test:
