@@ -20,23 +20,26 @@ class About extends StatelessWidget {
                 const Text(
                     'This app has been built with Flutter for learning purpose (Learning Lab Challenge)'),
                 Expanded(
-                        child: ListView(
-                          padding: const EdgeInsets.all(8.0),
-                          children: <Widget>[
-                            Container(
-                              height: 50,
-                              child: const Text('Entry A'),
-                            ),
-                            Container(
-                              height: 50,
-                              child: const Text('Entry A'),
-                            ),
-                            Container(
-                              height: 50,
-                              child: const Text('Entry A'),
-                            ),
-                          ],
-                        ))
+                    child: ListView(
+                  children: <Widget>[
+                    Container(
+                      height: 50,
+                      child: const Text('⚗️ Learning Lab'),
+                    ),
+                    Container(
+                      height: 50,
+                      child: const Text('💡 Ask for a feature'),
+                    ),
+                    Container(
+                      height: 50,
+                      child: const Text('👍 Rate the app'),
+                    ),
+                    Container(
+                      height: 50,
+                      child: const Text('🔓 Restore TextBlast Premium'),
+                    ),
+                  ],
+                ))
               ],
             )));
   }
