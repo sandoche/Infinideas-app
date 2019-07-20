@@ -127,7 +127,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
   void _openAboutPage(BuildContext context, bool isDarkTheme) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => About()),
+      MaterialPageRoute(builder: (context) => About(isDarkTheme: isDarkTheme)),
     );
   }
 
