@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'themes.dart';
 
 class About extends StatelessWidget {
   final bool isDarkTheme;
+
+  _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   About({Key key, @required this.isDarkTheme}) : super(key: key);
 
@@ -23,23 +32,29 @@ class About extends StatelessWidget {
                     child: ListView(
                   children: <Widget>[
                     InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          _launchURL('https://learn.uno');
+                        },
                         child: Container(
                           height: 50,
                           child: const Text('⚗️ Learning Lab'),
                         )),
                     InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          _launchURL('https://infinideas.learn.uno/?contact');
+                        },
                         child: Container(
                           height: 50,
                           child: const Text('💡 Ask for a feature'),
                         )),
-                    InkWell(
-                        onTap: () {},
-                        child: Container(
-                          height: 50,
-                          child: const Text('👍 Rate the app'),
-                        )),
+                    // InkWell(
+                    //     onTap: () {
+
+                    //     },
+                    //     child: Container(
+                    //       height: 50,
+                    //       child: const Text('👍 Rate the app'),
+                    //     )),
                     InkWell(
                         onTap: () {},
                         child: Container(
