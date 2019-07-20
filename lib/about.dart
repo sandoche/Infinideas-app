@@ -22,22 +22,30 @@ class About extends StatelessWidget {
                 Expanded(
                     child: ListView(
                   children: <Widget>[
-                    Container(
-                      height: 50,
-                      child: const Text('⚗️ Learning Lab'),
-                    ),
-                    Container(
-                      height: 50,
-                      child: const Text('💡 Ask for a feature'),
-                    ),
-                    Container(
-                      height: 50,
-                      child: const Text('👍 Rate the app'),
-                    ),
-                    Container(
-                      height: 50,
-                      child: const Text('🔓 Restore TextBlast Premium'),
-                    ),
+                    InkWell(
+                        onTap: () {},
+                        child: Container(
+                          height: 50,
+                          child: const Text('⚗️ Learning Lab'),
+                        )),
+                    InkWell(
+                        onTap: () {},
+                        child: Container(
+                          height: 50,
+                          child: const Text('💡 Ask for a feature'),
+                        )),
+                    InkWell(
+                        onTap: () {},
+                        child: Container(
+                          height: 50,
+                          child: const Text('👍 Rate the app'),
+                        )),
+                    InkWell(
+                        onTap: () {},
+                        child: Container(
+                          height: 50,
+                          child: const Text('🔓 Restore TextBlast Premium'),
+                        )),
                   ],
                 ))
               ],
