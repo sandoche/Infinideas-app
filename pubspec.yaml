@@ -25,6 +25,7 @@ dependencies:
   share: ^0.6.1
   dynamic_theme: ^1.0.1
   timeago: ^2.0.17
+  in_app_purchase: ^0.2.0
 
 dev_dependencies:
   flutter_test:
