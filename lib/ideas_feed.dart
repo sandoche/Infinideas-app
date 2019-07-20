@@ -6,6 +6,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:infinidea/blocs/IdeasBloc.dart';
 import 'package:infinidea/models/idea.dart';
 import 'idea_item.dart';
+import 'about.dart';
 import 'styles.dart';
 import 'package:flutter/services.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
@@ -45,7 +46,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
     final Stream purchaseUpdates =
         InAppPurchaseConnection.instance.purchaseUpdatedStream;
     _subscription = purchaseUpdates.listen(
-            (purchases) {
+        (purchases) {
           print('purchases' + purchases);
         },
         onDone: () {},
@@ -60,15 +61,13 @@ class _IdeasFeedState extends State<IdeasFeed> {
   }
 
   bool isDarkTheme() {
-    return Theme
-        .of(context)
-        .brightness == Brightness.dark;
+    return Theme.of(context).brightness == Brightness.dark;
   }
 
   retrieveProducts() async {
     final bool available = await InAppPurchaseConnection.instance.isAvailable();
     final QueryPurchaseDetailsResponse response =
-    await InAppPurchaseConnection.instance.queryPastPurchases();
+        await InAppPurchaseConnection.instance.queryPastPurchases();
     if (response.error != null) {
       // Handle the error.
     }
@@ -77,7 +76,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
     } else {
       Set<String> _kIds = <String>['darktheme'].toSet();
       final ProductDetailsResponse response =
-      await InAppPurchaseConnection.instance.queryProductDetails(_kIds);
+          await InAppPurchaseConnection.instance.queryProductDetails(_kIds);
       if (response.notFoundIDs.isNotEmpty) {}
 
       productDetails = response.productDetails[0];
@@ -87,9 +86,9 @@ class _IdeasFeedState extends State<IdeasFeed> {
   void purchaseItem(ProductDetails productDetails) {
     print('purchase item' + productDetails.toString());
     final PurchaseParam purchaseParam =
-    PurchaseParam(productDetails: productDetails);
+        PurchaseParam(productDetails: productDetails);
     if ((Platform.isIOS &&
-        productDetails.skProduct.subscriptionPeriod == null) ||
+            productDetails.skProduct.subscriptionPeriod == null) ||
         (Platform.isAndroid && productDetails.skuDetail.type == SkuType.subs)) {
       InAppPurchaseConnection.instance
           .buyConsumable(purchaseParam: purchaseParam);
@@ -99,7 +98,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
     }
   }
 
-  void toggleTheme() {
+  void _toggleTheme() {
     purchaseItem(productDetails);
 //    showDialog(
 //      context: context,
@@ -125,6 +124,13 @@ class _IdeasFeedState extends State<IdeasFeed> {
         .setThemeData(isDarkTheme() ? lightTheme : darkTheme);
   }
 
+  void _openAboutPage(BuildContext context, bool isDarkTheme) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => About()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,12 +147,12 @@ class _IdeasFeedState extends State<IdeasFeed> {
                             flexibleSpace: FlexibleSpaceBar(
                                 centerTitle: false,
                                 titlePadding:
-                                const EdgeInsets.only(left: 26, bottom: 40),
+                                    const EdgeInsets.only(left: 26, bottom: 40),
                                 title: Text('InfinIdea',
                                     style: getSliverAppBarTitleStyle(
                                         isDarkTheme()))),
                             backgroundColor:
-                            getSliverAppBarBackground(isDarkTheme()),
+                                getSliverAppBarBackground(isDarkTheme()),
                             expandedHeight: 150.0,
                             actions: <Widget>[
                               IconButton(
@@ -154,8 +160,16 @@ class _IdeasFeedState extends State<IdeasFeed> {
                                 color: getMenuIconColor(isDarkTheme()),
                                 tooltip: 'Toggle Theme',
                                 onPressed: () {
-                                  toggleTheme();
+                                  _toggleTheme();
                                 },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.info),
+                                color: getMenuIconColor(isDarkTheme()),
+                                tooltip: 'About',
+                                onPressed: () {
+                                  _openAboutPage(context, isDarkTheme());
+                                }
                               ),
                             ]),
                         SliverList(
