@@ -10,7 +10,7 @@ const BACKGROUND_TAG_LOW = Color(0xfffab95b);
 const BACKGROUND_TAG_MEDIUM = Color(0xff2f89fc);
 const BACKGROUND_TAG_HIGH = Color(0xffc6e377);
 
-const MARGIN_ABOUT_LINK = const EdgeInsets.all(10.0);
+const MARGIN_ABOUT_LINK = const EdgeInsets.only(top: 20, bottom: 20, left: 5, right: 5);
 
 const STYLE_TEXT_TAG = TextStyle(
   fontSize: 8.0,
@@ -49,6 +49,16 @@ const STYLE_TEXT_LIGHT_THEME = TextStyle(
 );
 
 const STYLE_TEXT_DARK_THEME = TextStyle(
+    color: Colors.white,
+    fontSize: 16.0
+);
+
+const STYLE_ABOUT_TEXT_LIGHT_THEME = TextStyle(
+    color: COLOR_DARK,
+    fontSize: 16.0
+);
+
+const STYLE_ABOUT_TEXT_DARK_THEME = TextStyle(
     color: Colors.white,
     fontSize: 16.0
 );

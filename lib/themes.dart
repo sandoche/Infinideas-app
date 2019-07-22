@@ -84,3 +84,11 @@ getStyleAboutText(isDarkmode) {
     return STYLE_TEXT_LIGHT_THEME;
   }
 }
+
+getStyleAboutMenu(isDarkmode) {
+  if(isDarkmode) {
+    return STYLE_ABOUT_TEXT_DARK_THEME;
+  } else {
+    return STYLE_ABOUT_TEXT_LIGHT_THEME;
+  }
+}

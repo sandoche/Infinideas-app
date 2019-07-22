@@ -45,7 +45,8 @@ class About extends StatelessWidget {
                         },
                         child: Container(
                           margin: MARGIN_ABOUT_LINK,
-                          child: const Text('⚗️ Learning Lab'),
+                          child: Text('⚗️ Learning Lab',
+                              style: getStyleAboutMenu(isDarkTheme)),
                         )),
                     InkWell(
                         onTap: () {
@@ -53,13 +54,15 @@ class About extends StatelessWidget {
                         },
                         child: Container(
                           margin: MARGIN_ABOUT_LINK,
-                          child: const Text('💡 Ask for a feature'),
+                          child: Text('💡 Ask for a feature',
+                              style: getStyleAboutMenu(isDarkTheme)),
                         )),
                     InkWell(
                         onTap: () {},
                         child: Container(
                           margin: MARGIN_ABOUT_LINK,
-                          child: const Text('🔓 Restore TextBlast Premium'),
+                          child: Text('🔓 Restore TextBlast Premium',
+                              style: getStyleAboutMenu(isDarkTheme)),
                         )),
                   ],
                 ))
