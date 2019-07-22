@@ -76,3 +76,11 @@ getTextStyle(isDarkmode) {
     return STYLE_APP_TITLE_LIGHT_THEME;
   }
 }
+
+getStyleAboutText(isDarkmode) {
+  if(isDarkmode) {
+    return STYLE_TEXT_DARK_THEME;
+  } else {
+    return STYLE_TEXT_LIGHT_THEME;
+  }
+}

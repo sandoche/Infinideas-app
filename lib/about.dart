@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'themes.dart';
+import 'styles.dart';
 
 class About extends StatelessWidget {
   final bool isDarkTheme;
@@ -22,12 +23,19 @@ class About extends StatelessWidget {
             title: Text('About'),
             backgroundColor: getAppBarBackground(isDarkTheme)),
         body: Container(
-            margin: const EdgeInsets.all(10.0),
+            margin: const EdgeInsets.all(30.0),
             child: Column(
               children: <Widget>[
-                const Text('Infinite feed of ideas 💡'),
-                const Text(
-                    'This app has been built with Flutter for learning purpose (Learning Lab Challenge)'),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text('Infinite feed of ideas 💡',
+                      style: getStyleAboutText(isDarkTheme)),
+                ),
+                Text(''),
+                Text(
+                    'This app has been built with Flutter for learning purpose (Learning Lab Challenge)',
+                    style: getStyleAboutText(isDarkTheme)),
+                Text(''),
                 Expanded(
                     child: ListView(
                   children: <Widget>[
@@ -36,7 +44,7 @@ class About extends StatelessWidget {
                           _launchURL('https://learn.uno');
                         },
                         child: Container(
-                          height: 50,
+                          margin: MARGIN_ABOUT_LINK,
                           child: const Text('⚗️ Learning Lab'),
                         )),
                     InkWell(
@@ -44,21 +52,13 @@ class About extends StatelessWidget {
                           _launchURL('https://infinideas.learn.uno/?contact');
                         },
                         child: Container(
-                          height: 50,
+                          margin: MARGIN_ABOUT_LINK,
                           child: const Text('💡 Ask for a feature'),
                         )),
-                    // InkWell(
-                    //     onTap: () {
-
-                    //     },
-                    //     child: Container(
-                    //       height: 50,
-                    //       child: const Text('👍 Rate the app'),
-                    //     )),
                     InkWell(
                         onTap: () {},
                         child: Container(
-                          height: 50,
+                          margin: MARGIN_ABOUT_LINK,
                           child: const Text('🔓 Restore TextBlast Premium'),
                         )),
                   ],
