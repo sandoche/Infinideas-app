@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:infinidea/models/idea.dart';
-import 'styles.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:share/share.dart';
+import 'styles.dart';
+import 'themes.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class IdeaItem extends StatelessWidget {
   final Idea idea;
+  final bool isDarkTheme;
 
-  const IdeaItem({Key key, this.idea}) : super(key: key);
+  const IdeaItem({Key key, this.idea, this.isDarkTheme}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return InkWell(
       onTap: () {
-        _openWebView(context, idea);
+        _openWebView(context, idea, isDarkTheme);
       },
       child: Padding(
           padding: const EdgeInsets.all(28.0),
@@ -33,16 +37,16 @@ class IdeaItem extends StatelessWidget {
                   : Container(),
               SizedBox(height: 10),
               Row(children: <Widget>[
-                Text(idea.source, style: STYLE_METADATA),
-                Text(' • ', style: STYLE_METADATA),
-                Text(idea.timestamp.toString(), style: STYLE_METADATA),
+                Text(idea.source, style: getStyleMeta(isDarkTheme)),
+                Text(' • ', style: getStyleMeta(isDarkTheme)),
+                Text(timeago.format(new DateTime.fromMicrosecondsSinceEpoch(idea.timestamp.toInt() * 1000000)), style: getStyleMeta(isDarkTheme)),
               ])
             ],
           )),
     );
   }
 
-  void _openWebView(BuildContext context, Idea idea) {
+  void _openWebView(BuildContext context, Idea idea, bool isDarkTheme) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) {
@@ -50,12 +54,13 @@ class IdeaItem extends StatelessWidget {
             url: idea.url,
             appBar: new AppBar(
               title: new Text(idea.title),
+              backgroundColor: getAppBarBackground(isDarkTheme),
               actions: <Widget>[
                 IconButton(
                   icon: Icon(Icons.share),
                   onPressed: () {
-                    Share.share('Hey, I just discovered this cool repository '
-                        'thanks to the Infinidea app (https://infinidea.learn.uno) '
+                    Share.share('Hey, I just discovered this cool idea '
+                        'thanks to the Infinidea app (https://infinideas.learn.uno) '
                         '💡 ${idea.url}');
                   },
                 )
