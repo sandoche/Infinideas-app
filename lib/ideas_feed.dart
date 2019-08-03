@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/billing_client_wrappers.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:infinidea/blocs/IdeasBloc.dart';
 import 'package:infinidea/models/idea.dart';
 import 'idea_item.dart';
+import 'about.dart';
 import 'styles.dart';
 import 'package:flutter/services.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
@@ -167,6 +167,13 @@ class _IdeasFeedState extends State<IdeasFeed> {
         .setThemeData(isDarkTheme() ? lightTheme : darkTheme);
   }
 
+  void _openAboutPage(BuildContext context, bool isDarkTheme) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => About(isDarkTheme: isDarkTheme)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -192,17 +199,27 @@ class _IdeasFeedState extends State<IdeasFeed> {
                             expandedHeight: 150.0,
                             actions: <Widget>[
                               IconButton(
-                                icon: Icon(Icons.brightness_3),
+                                icon: Icon(Icons.brightness_6),
+                                color: getMenuIconColor(isDarkTheme()),
                                 tooltip: 'Toggle Theme',
                                 onPressed: () {
                                   toggleTheme();
                                 },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.info),
+                                color: getMenuIconColor(isDarkTheme()),
+                                tooltip: 'About',
+                                onPressed: () {
+                                  _openAboutPage(context, isDarkTheme());
+                                }
                               ),
                             ]),
                         SliverList(
                             delegate: new SliverChildBuilderDelegate(
                                 (BuildContext context, int index) {
                           return IdeaItem(
+                            isDarkTheme: isDarkTheme(),
                             idea: snapshot.data[index],
                           );
                         }, childCount: snapshot.data.length))
