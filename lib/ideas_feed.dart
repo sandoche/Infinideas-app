@@ -53,7 +53,6 @@ class _IdeasFeedState extends State<IdeasFeed> {
         }
       }
     });
-    print("retrieveProducts");
     retrieveProducts();
   }
 
@@ -66,23 +65,15 @@ class _IdeasFeedState extends State<IdeasFeed> {
   }
 
   retrieveProducts() async {
-    print("retrieveProducts");
-    bool isDarkThemeUnlocked = await this.isDarkThemeUnlocked();
-    print("isDarkThemeUnlocked" + isDarkThemeUnlocked.toString());
-    if (!isDarkThemeUnlocked) {
-      print("!isDarkThemeUnlocked");
-      final bool available =
-          await InAppPurchaseConnection.instance.isAvailable();
-      print("available?");
-      if (available) {
-        print("available");
+    final bool available = await InAppPurchaseConnection.instance.isAvailable();
+    if (available) {
+      bool isDarkThemeUnlocked = await this.isDarkThemeUnlocked();
+      if (!isDarkThemeUnlocked) {
         final QueryPurchaseDetailsResponse response =
             await InAppPurchaseConnection.instance.queryPastPurchases();
-        print(response.pastPurchases.length);
         if (response.error == null && response.pastPurchases.length > 0) {
-          if (response.pastPurchases[0].status == PurchaseStatus.purchased) {
+          if (response.pastPurchases[0].productID == "darktheme") {
             saveDarkThemeUnlocked();
-            setDarkTheme();
             if (Platform.isIOS) {
               InAppPurchaseConnection.instance
                   .completePurchase(response.pastPurchases[0]);
@@ -119,7 +110,6 @@ class _IdeasFeedState extends State<IdeasFeed> {
   }
 
   Future toggleTheme() async {
-    retrieveProducts();
     bool isDarkThemeUnlocked = await this.isDarkThemeUnlocked();
     if (isDarkThemeUnlocked) {
       setDarkTheme();
@@ -207,13 +197,12 @@ class _IdeasFeedState extends State<IdeasFeed> {
                                 },
                               ),
                               IconButton(
-                                icon: Icon(Icons.info),
-                                color: getMenuIconColor(isDarkTheme()),
-                                tooltip: 'About',
-                                onPressed: () {
-                                  _openAboutPage(context, isDarkTheme());
-                                }
-                              ),
+                                  icon: Icon(Icons.info),
+                                  color: getMenuIconColor(isDarkTheme()),
+                                  tooltip: 'About',
+                                  onPressed: () {
+                                    _openAboutPage(context, isDarkTheme());
+                                  }),
                             ]),
                         SliverList(
                             delegate: new SliverChildBuilderDelegate(
