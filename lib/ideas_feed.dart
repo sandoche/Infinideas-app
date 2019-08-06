@@ -35,6 +35,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
   @override
   void initState() {
     super.initState();
+    setDefaultTheme();
     bloc.fetch(true);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -49,7 +50,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
       if (purchases.length > 0) {
         if (purchases[0].status == PurchaseStatus.purchased) {
           saveDarkThemeUnlocked();
-          setDarkTheme();
+          switchTheme();
         }
       }
     });
@@ -112,7 +113,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
   Future toggleTheme() async {
     bool isDarkThemeUnlocked = await this.isDarkThemeUnlocked();
     if (isDarkThemeUnlocked) {
-      setDarkTheme();
+      switchTheme();
     } else {
       showDialog(
         context: context,
@@ -152,9 +153,25 @@ class _IdeasFeedState extends State<IdeasFeed> {
     sharedPreferences.setBool("darkThemeUnlocked", true);
   }
 
-  void setDarkTheme() {
+  void saveDefaultTheme(bool isDarkTheme) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setBool("isDefaultThemeDark", isDarkTheme);
+  }
+
+  void switchTheme() {
+    saveDefaultTheme(!isDarkTheme());
     DynamicTheme.of(context)
         .setThemeData(isDarkTheme() ? lightTheme : darkTheme);
+  }
+
+  setDefaultTheme() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    bool isDefaultThemeDark =
+        sharedPreferences.getBool("isDefaultThemeDark") == null
+            ? false
+            : sharedPreferences.getBool("isDefaultThemeDark");
+    ThemeData defaultTheme = isDefaultThemeDark ? darkTheme : lightTheme;
+    DynamicTheme.of(context).setThemeData(defaultTheme);
   }
 
   void _openAboutPage(BuildContext context, bool isDarkTheme) {
