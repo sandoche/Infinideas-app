@@ -7,10 +7,10 @@ import 'package:infinidea/blocs/IdeasBloc.dart';
 import 'package:infinidea/models/idea.dart';
 import 'idea_item.dart';
 import 'about.dart';
-import 'styles.dart';
 import 'package:flutter/services.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'themes.dart';
+import 'connectivity_check.dart';
 
 class IdeasFeed extends StatefulWidget {
   IdeasFeed({Key key, this.title}) : super(key: key);
@@ -133,6 +133,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
 
   @override
   Widget build(BuildContext context) {
+    checkConnectivity(context);
     return Scaffold(
       body: StreamBuilder<List<Idea>>(
           stream: bloc.ideasStream,

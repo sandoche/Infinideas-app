@@ -27,6 +27,7 @@ dependencies:
   timeago: ^2.0.17
   in_app_purchase: ^0.2.0
   url_launcher: ^5.1.0
+  connectivity: ^0.4.3+6
 
 dev_dependencies:
   flutter_test:
