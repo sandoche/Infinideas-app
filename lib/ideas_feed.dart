@@ -36,10 +36,12 @@ class _IdeasFeedState extends State<IdeasFeed> {
   @override
   void initState() {
     super.initState();
+    displayAlertWhenNoConnection(context);
     bloc.fetch(true);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
+        displayAlertWhenNoConnection(context);
         bloc.fetch(false);
       }
     });
@@ -57,6 +59,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
   }
 
   Future<Null> _refresh() {
+    displayAlertWhenNoConnection(context);
     return bloc.fetch(true);
   }
 
@@ -133,7 +136,6 @@ class _IdeasFeedState extends State<IdeasFeed> {
 
   @override
   Widget build(BuildContext context) {
-    checkConnectivity(context);
     return Scaffold(
       body: StreamBuilder<List<Idea>>(
           stream: bloc.ideasStream,

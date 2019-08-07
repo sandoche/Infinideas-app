@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:connectivity/connectivity.dart';
 import 'dart:async' show Future;
 
-Future<void> checkConnectivity(context) async {
+
+Future<bool> isConnectionActivated(context) async {
+  var connectivityResult = await (Connectivity().checkConnectivity());
+  return !(connectivityResult != ConnectivityResult.mobile && connectivityResult != ConnectivityResult.wifi);
+}
+
+Future<void> displayAlertWhenNoConnection(context) async {
   var connectivityResult = await (Connectivity().checkConnectivity());
   if (connectivityResult != ConnectivityResult.mobile && connectivityResult != ConnectivityResult.wifi) {
     return showDialog<void>(
@@ -20,7 +26,7 @@ Future<void> checkConnectivity(context) async {
           ),
           actions: <Widget>[
             FlatButton(
-              child: Text('Try again'),
+              child: Text('Got it !'),
               onPressed: () {
                 Navigator.of(context).pop();
               },

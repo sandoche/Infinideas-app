@@ -5,6 +5,7 @@ import 'package:share/share.dart';
 import 'styles.dart';
 import 'themes.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'connectivity_check.dart';
 
 class IdeaItem extends StatelessWidget {
   final Idea idea;
@@ -46,27 +47,32 @@ class IdeaItem extends StatelessWidget {
     );
   }
 
-  void _openWebView(BuildContext context, Idea idea, bool isDarkTheme) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) {
-        return new WebviewScaffold(
-            url: idea.url,
-            appBar: new AppBar(
-              title: new Text(idea.title),
-              backgroundColor: getAppBarBackground(isDarkTheme),
-              actions: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.share),
-                  onPressed: () {
-                    Share.share('Hey, I just discovered this cool idea '
-                        'thanks to the Infinidea app (https://infinideas.learn.uno) '
-                        '💡 ${idea.url}');
-                  },
-                )
-              ],
-            ));
-      }),
-    );
+  Future<void> _openWebView(BuildContext context, Idea idea, bool isDarkTheme) async {
+    var connected = await isConnectionActivated(context);
+    if(connected) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) {
+          return new WebviewScaffold(
+              url: idea.url,
+              appBar: new AppBar(
+                title: new Text(idea.title),
+                backgroundColor: getAppBarBackground(isDarkTheme),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.share),
+                    onPressed: () {
+                      Share.share('Hey, I just discovered this cool idea '
+                          'thanks to the Infinidea app (https://infinideas.learn.uno) '
+                          '💡 ${idea.url}');
+                    },
+                  )
+                ],
+              ));
+        }),
+      );
+    } else {
+      displayAlertWhenNoConnection(context);
+    }    
   }
 }
