@@ -15,13 +15,15 @@ class IdeasBloc {
     if (refresh) {
       listIdeas.clear();
     }
-    return Observable.combineLatest2(
+    return Observable.combineLatest3(
         _apiProvider.fetchNewLightbulb(refresh).asStream(),
         _apiProvider.fetchNewAppIdeas(refresh).asStream(),
-        (List<Idea> listA, List<Idea> listB) {
+        _apiProvider.fetchNewStartupIdeas(refresh).asStream(),
+        (List<Idea> listA, List<Idea> listB, List<Idea> listC) {
       List<Idea> merged = new List();
       merged.addAll(listA);
       merged.addAll(listB);
+      merged.addAll(listC);
       merged.sort((a, b) => b.timestamp.compareTo(a.timestamp));
       return merged;
     }).listen((List<Idea> list) {
