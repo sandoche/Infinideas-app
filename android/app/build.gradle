@@ -42,7 +42,7 @@ android {
         applicationId "com.sandoche.infinidea"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 6
+        versionCode 14
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
