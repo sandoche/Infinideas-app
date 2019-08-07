@@ -11,6 +11,7 @@ import 'styles.dart';
 import 'package:flutter/services.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'themes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class IdeasFeed extends StatefulWidget {
   IdeasFeed({Key key, this.title}) : super(key: key);
@@ -25,8 +26,6 @@ class _IdeasFeedState extends State<IdeasFeed> {
 
   StreamSubscription<List<PurchaseDetails>> _subscription;
 
-  ProductDetails productDetails;
-
   @override
   void dispose() {
     _subscription.cancel();
@@ -36,6 +35,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
   @override
   void initState() {
     super.initState();
+    setDefaultTheme();
     bloc.fetch(true);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -43,16 +43,17 @@ class _IdeasFeedState extends State<IdeasFeed> {
         bloc.fetch(false);
       }
     });
+
     final Stream purchaseUpdates =
         InAppPurchaseConnection.instance.purchaseUpdatedStream;
-    _subscription = purchaseUpdates.listen(
-        (purchases) {
-          print('purchases' + purchases);
-        },
-        onDone: () {},
-        onError: (error) {
-          print('error' + error);
-        });
+    _subscription = purchaseUpdates.listen((purchases) {
+      if (purchases.length > 0) {
+        if (purchases[0].status == PurchaseStatus.purchased) {
+          saveDarkThemeUnlocked();
+          switchTheme();
+        }
+      }
+    });
     retrieveProducts();
   }
 
@@ -66,62 +67,111 @@ class _IdeasFeedState extends State<IdeasFeed> {
 
   retrieveProducts() async {
     final bool available = await InAppPurchaseConnection.instance.isAvailable();
-    final QueryPurchaseDetailsResponse response =
-        await InAppPurchaseConnection.instance.queryPastPurchases();
-    if (response.error != null) {
-      // Handle the error.
+    if (available) {
+      bool isDarkThemeUnlocked = await this.isDarkThemeUnlocked();
+      if (!isDarkThemeUnlocked) {
+        final QueryPurchaseDetailsResponse response =
+            await InAppPurchaseConnection.instance.queryPastPurchases();
+        if (response.error == null && response.pastPurchases.length > 0) {
+          if (response.pastPurchases[0].productID == "darktheme") {
+            saveDarkThemeUnlocked();
+            if (Platform.isIOS) {
+              InAppPurchaseConnection.instance
+                  .completePurchase(response.pastPurchases[0]);
+            }
+          }
+        }
+      }
     }
-    if (!available) {
-      Set<String> _kIds = <String>['darktheme'].toSet();
-    } else {
-      Set<String> _kIds = <String>['darktheme'].toSet();
-      final ProductDetailsResponse response =
-          await InAppPurchaseConnection.instance.queryProductDetails(_kIds);
+  }
+
+  Future purchaseItem() async {
+    final bool available = await InAppPurchaseConnection.instance.isAvailable();
+    if (available) {
+      ProductDetails productDetails;
+      Set<String> productsIds = <String>['darktheme'].toSet();
+      final ProductDetailsResponse response = await InAppPurchaseConnection
+          .instance
+          .queryProductDetails(productsIds);
       if (response.notFoundIDs.isNotEmpty) {}
-
       productDetails = response.productDetails[0];
+      final PurchaseParam purchaseParam =
+          PurchaseParam(productDetails: productDetails);
+      if ((Platform.isIOS &&
+              productDetails.skProduct.subscriptionPeriod == null) ||
+          (Platform.isAndroid &&
+              productDetails.skuDetail.type == SkuType.subs)) {
+        InAppPurchaseConnection.instance
+            .buyConsumable(purchaseParam: purchaseParam);
+      } else {
+        InAppPurchaseConnection.instance
+            .buyNonConsumable(purchaseParam: purchaseParam);
+      }
     }
   }
 
-  void purchaseItem(ProductDetails productDetails) {
-    print('purchase item' + productDetails.toString());
-    final PurchaseParam purchaseParam =
-        PurchaseParam(productDetails: productDetails);
-    if ((Platform.isIOS &&
-            productDetails.skProduct.subscriptionPeriod == null) ||
-        (Platform.isAndroid && productDetails.skuDetail.type == SkuType.subs)) {
-      InAppPurchaseConnection.instance
-          .buyConsumable(purchaseParam: purchaseParam);
+  Future toggleTheme() async {
+    bool isDarkThemeUnlocked = await this.isDarkThemeUnlocked();
+    if (isDarkThemeUnlocked) {
+      switchTheme();
     } else {
-      InAppPurchaseConnection.instance
-          .buyNonConsumable(purchaseParam: purchaseParam);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text("Payment"),
+            content: new Text("Unlock the darktheme !!"),
+            actions: <Widget>[
+              FlatButton(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                child: const Text('Unlock darktheme'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  purchaseItem();
+                },
+              )
+            ],
+          );
+        },
+      );
     }
   }
 
-  void _toggleTheme() {
-    purchaseItem(productDetails);
-//    showDialog(
-//      context: context,
-//      builder: (BuildContext context) {
-//        // return object of type Dialog
-//        return AlertDialog(
-//          title: new Text("Alert Dialog title"),
-//          content: new Text("Alert Dialog body"),
-//          actions: <Widget>[
-//            // usually buttons at the bottom of the dialog
-//            new FlatButton(
-//              child: new Text("Close"),
-//              onPressed: () {
-//                Navigator.of(context).pop();
-//              },
-//            ),
-//          ],
-//        );
-//      },
-//    );
+  Future<bool> isDarkThemeUnlocked() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    bool isDarkThemeUnlocked = sharedPreferences.getBool("darkThemeUnlocked");
+    return isDarkThemeUnlocked == null ? false : isDarkThemeUnlocked;
+  }
 
+  void saveDarkThemeUnlocked() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setBool("darkThemeUnlocked", true);
+  }
+
+  void saveDefaultTheme(bool isDarkTheme) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setBool("isDefaultThemeDark", isDarkTheme);
+  }
+
+  void switchTheme() {
+    saveDefaultTheme(!isDarkTheme());
     DynamicTheme.of(context)
         .setThemeData(isDarkTheme() ? lightTheme : darkTheme);
+  }
+
+  setDefaultTheme() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    bool isDefaultThemeDark =
+        sharedPreferences.getBool("isDefaultThemeDark") == null
+            ? false
+            : sharedPreferences.getBool("isDefaultThemeDark");
+    ThemeData defaultTheme = isDefaultThemeDark ? darkTheme : lightTheme;
+    DynamicTheme.of(context).setThemeData(defaultTheme);
   }
 
   void _openAboutPage(BuildContext context, bool isDarkTheme) {
@@ -160,17 +210,16 @@ class _IdeasFeedState extends State<IdeasFeed> {
                                 color: getMenuIconColor(isDarkTheme()),
                                 tooltip: 'Toggle Theme',
                                 onPressed: () {
-                                  _toggleTheme();
+                                  toggleTheme();
                                 },
                               ),
                               IconButton(
-                                icon: Icon(Icons.info),
-                                color: getMenuIconColor(isDarkTheme()),
-                                tooltip: 'About',
-                                onPressed: () {
-                                  _openAboutPage(context, isDarkTheme());
-                                }
-                              ),
+                                  icon: Icon(Icons.info),
+                                  color: getMenuIconColor(isDarkTheme()),
+                                  tooltip: 'About',
+                                  onPressed: () {
+                                    _openAboutPage(context, isDarkTheme());
+                                  }),
                             ]),
                         SliverList(
                             delegate: new SliverChildBuilderDelegate(
