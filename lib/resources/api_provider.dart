@@ -45,4 +45,22 @@ class ApiProvider {
       throw Exception('Failed to load post');
     }
   }
+
+  Future<List<Idea>> fetchNewStartupIdeas(bool refresh) async {
+    String url =
+        'https://www.reddit.com/r/Startup_ideas/new.json?sort=new&count=25&after=';
+    if (newIdeaAfter != null && !refresh) url += newIdeaAfter;
+    final response = await client.get(url);
+    if (response.statusCode == 200) {
+      List<Idea> ideas = new List();
+      Map<String, dynamic> data = json.decode(response.body)['data'];
+      newIdeaAfter = data['after'];
+      data['children'].forEach((item) {
+        ideas.add(Idea.fromJson(item['data']));
+      });
+      return ideas;
+    } else {
+      throw Exception('Failed to load post');
+    }
+  }
 }
