@@ -9,8 +9,8 @@ Future<bool> isConnectionActivated(context) async {
 }
 
 Future<void> displayAlertWhenNoConnection(context) async {
-  var connectivityResult = await (Connectivity().checkConnectivity());
-  if (connectivityResult != ConnectivityResult.mobile && connectivityResult != ConnectivityResult.wifi) {
+  var connected = await isConnectionActivated(context);
+  if(!connected) {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
