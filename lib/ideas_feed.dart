@@ -35,11 +35,8 @@ class _IdeasFeedState extends State<IdeasFeed> {
   @override
   void initState() {
     super.initState();
-<<<<<<< HEAD
     displayAlertWhenNoConnection(context);
-=======
     setDefaultTheme();
->>>>>>> develop
     bloc.fetch(true);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
