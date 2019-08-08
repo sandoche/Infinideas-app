@@ -10,11 +10,8 @@ import 'about.dart';
 import 'package:flutter/services.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'themes.dart';
-<<<<<<< HEAD
 import 'connectivity_check.dart';
-=======
 import 'package:shared_preferences/shared_preferences.dart';
->>>>>>> develop
 
 class IdeasFeed extends StatefulWidget {
   IdeasFeed({Key key, this.title}) : super(key: key);
