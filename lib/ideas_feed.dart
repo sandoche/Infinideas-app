@@ -259,15 +259,15 @@ class _IdeasFeedState extends State<IdeasFeed> {
         ? new Align(
             child: new Container(
               width: 70.0,
-              height: 70.0,
+              height: 50.0,
               child: new Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: new Center(child: new CircularProgressIndicator())),
             ),
           )
         : new SizedBox(
-            width: 0.0,
-            height: 0.0,
+            width: 70.0,
+            height: 50.0,
           );
   }
 }
