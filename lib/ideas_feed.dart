@@ -7,10 +7,10 @@ import 'package:infinidea/blocs/IdeasBloc.dart';
 import 'package:infinidea/models/idea.dart';
 import 'idea_item.dart';
 import 'about.dart';
-import 'styles.dart';
 import 'package:flutter/services.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'themes.dart';
+import 'connectivity_check.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class IdeasFeed extends StatefulWidget {
@@ -36,12 +36,14 @@ class _IdeasFeedState extends State<IdeasFeed> {
   @override
   void initState() {
     super.initState();
+    displayAlertWhenNoConnection(context);
     setDefaultTheme();
     bloc.fetch(true);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         setState(() {
+          displayAlertWhenNoConnection(context);
           loadingNewItems = true;
           fetchNewItems();
         });
@@ -62,6 +64,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
   }
 
   Future<Null> _refresh() {
+    displayAlertWhenNoConnection(context);
     return bloc.fetch(true);
   }
 
