@@ -7,6 +7,11 @@ class Idea {
   String _url;
   String source = "Reddit";
   int _votes;
+  bool _isLast = false;
+
+  Idea(bool isLast) {
+    this._isLast = isLast;
+  }
 
   Idea.fromJson(Map<String, dynamic> data) {
     _title = data['title'];
@@ -25,4 +30,6 @@ class Idea {
   String get url => _url;
 
   double get timestamp => _timestamp;
+
+  bool get isLast => _isLast;
 }

@@ -25,6 +25,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
   ScrollController _scrollController = new ScrollController();
 
   StreamSubscription<List<PurchaseDetails>> _subscription;
+  bool loadingNewItems = false;
 
   @override
   void dispose() {
@@ -41,8 +42,11 @@ class _IdeasFeedState extends State<IdeasFeed> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        displayAlertWhenNoConnection(context);
-        bloc.fetch(false);
+        setState(() {
+          displayAlertWhenNoConnection(context);
+          loadingNewItems = true;
+          fetchNewItems();
+        });
       }
     });
 
@@ -62,6 +66,15 @@ class _IdeasFeedState extends State<IdeasFeed> {
   Future<Null> _refresh() {
     displayAlertWhenNoConnection(context);
     return bloc.fetch(true);
+  }
+
+  fetchNewItems() async {
+    bool isDoneFetching = await bloc.fetch(false);
+    if (isDoneFetching) {
+      setState(() {
+        loadingNewItems = false;
+      });
+    }
   }
 
   bool isDarkTheme() {
@@ -227,10 +240,14 @@ class _IdeasFeedState extends State<IdeasFeed> {
                         SliverList(
                             delegate: new SliverChildBuilderDelegate(
                                 (BuildContext context, int index) {
-                          return IdeaItem(
-                            isDarkTheme: isDarkTheme(),
-                            idea: snapshot.data[index],
-                          );
+                          if (snapshot.data[index].isLast) {
+                            return _loader();
+                          } else {
+                            return IdeaItem(
+                              isDarkTheme: isDarkTheme(),
+                              idea: snapshot.data[index],
+                            );
+                          }
                         }, childCount: snapshot.data.length))
                       ]));
             } else {
@@ -238,5 +255,22 @@ class _IdeasFeedState extends State<IdeasFeed> {
             }
           }),
     );
+  }
+
+  Widget _loader() {
+    return loadingNewItems
+        ? new Align(
+            child: new Container(
+              width: 70.0,
+              height: 50.0,
+              child: new Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: new Center(child: new CircularProgressIndicator())),
+            ),
+          )
+        : new SizedBox(
+            width: 70.0,
+            height: 50.0,
+          );
   }
 }
