@@ -11,7 +11,7 @@ class IdeasBloc {
 
   Observable<List<Idea>> get ideasStream => publishSubject.stream;
 
-  Future<Null> fetch(bool refresh) {
+  Future<bool> fetch(bool refresh) {
     if (refresh) {
       listIdeas.clear();
     }
@@ -25,11 +25,12 @@ class IdeasBloc {
       merged.addAll(listB);
       merged.addAll(listC);
       merged.sort((a, b) => b.timestamp.compareTo(a.timestamp));
+      merged.add(Idea(true));
       return merged;
     }).listen((List<Idea> list) {
       listIdeas.addAll(list);
       publishSubject.sink.add(listIdeas);
-    }).asFuture();
+    }).asFuture(true);
   }
 }
 
