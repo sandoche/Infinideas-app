@@ -19,7 +19,7 @@ class TwitterClient {
     if (nextResults != null && !refresh) {
       url += nextResults;
     } else {
-      url += "?q=%23$searchTerm&result_type=recent";
+      url += "?q=%23$searchTerm&result_type=recent&count=50";
     }
     final response = await client.get(
       url,
