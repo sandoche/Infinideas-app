@@ -48,10 +48,9 @@ class TwitterIdea extends Idea {
     var date = data['created_at'].split(' ');
     date.removeAt(4);
     DateTime time = format.parse(date.join(' '));
-    _timestamp = time.
-    millisecondsSinceEpoch;
-    
-    _url = "https://twitter.com/$data['user']['screen_name']/status/$data['id_str']";
+    _timestamp = time.millisecondsSinceEpoch;
+    _url =
+        "https://twitter.com/${data['user']['screen_name']}/status/${data['id_str']}";
     _votes = data['favorite_count'] + data['retweet_count'];
     _source = "Twitter";
   }

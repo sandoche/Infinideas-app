@@ -21,7 +21,7 @@ class IdeasBloc {
         _apiProvider.fetchNewLightbulb(refresh).asStream(),
         _apiProvider.fetchNewAppIdeas(refresh).asStream(),
         _apiProvider.fetchNewStartupIdeas(refresh).asStream(),
-        _twitterClient.fetch("ligue1").asStream(), (List<Idea> listA,
+        _twitterClient.fetch("ideamachine", refresh).asStream(), (List<Idea> listA,
             List<Idea> listB, List<Idea> listC, List<Idea> listD) {
       List<Idea> merged = new List();
       merged.addAll(listA);
