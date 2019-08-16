@@ -40,7 +40,7 @@ class IdeaItem extends StatelessWidget {
               Row(children: <Widget>[
                 Text(idea.source, style: getStyleMeta(isDarkTheme)),
                 Text(' • ', style: getStyleMeta(isDarkTheme)),
-                Text(timeago.format(new DateTime.fromMicrosecondsSinceEpoch(idea.timestamp.toInt() * 1000000)), style: getStyleMeta(isDarkTheme)),
+                Text(timeago.format(new DateTime.fromMillisecondsSinceEpoch(idea.timestamp)), style: getStyleMeta(isDarkTheme)),
               ])
             ],
           )),
