@@ -22,8 +22,6 @@ class IdeasFeed extends StatefulWidget {
   _IdeasFeedState createState() => _IdeasFeedState();
 }
 
-const String PRODUCT_ID = "darktheme";
-
 class _IdeasFeedState extends State<IdeasFeed> {
 
   ScrollController _scrollController = new ScrollController();
