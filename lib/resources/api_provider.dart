@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' show Client;
 import 'dart:async';
 
@@ -20,7 +21,7 @@ class ApiProvider {
       Map<String, dynamic> data = json.decode(response.body)['data'];
       lightBulbAfter = data['after'];
       data['children'].forEach((item) {
-        ideas.add(Idea.fromJson(item['data']));
+        ideas.add(RedditIdea.fromJson(item['data']));
       });
       return ideas;
     } else {
@@ -38,7 +39,7 @@ class ApiProvider {
       Map<String, dynamic> data = json.decode(response.body)['data'];
       newIdeaAfter = data['after'];
       data['children'].forEach((item) {
-        ideas.add(Idea.fromJson(item['data']));
+        ideas.add(RedditIdea.fromJson(item['data']));
       });
       return ideas;
     } else {
@@ -56,7 +57,7 @@ class ApiProvider {
       Map<String, dynamic> data = json.decode(response.body)['data'];
       newIdeaAfter = data['after'];
       data['children'].forEach((item) {
-        ideas.add(Idea.fromJson(item['data']));
+        ideas.add(RedditIdea.fromJson(item['data']));
       });
       return ideas;
     } else {

@@ -29,6 +29,7 @@ dependencies:
   connectivity: ^0.4.3+6
   in_app_purchase: ^0.2.0+6
   shared_preferences: ^0.5.3+4
+  intl: ^0.15.8
 
 dev_dependencies:
   flutter_test:

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/billing_client_wrappers.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase/store_kit_wrappers.dart';
 import 'package:infinidea/blocs/IdeasBloc.dart';
 import 'package:infinidea/models/idea.dart';
 import 'idea_item.dart';
@@ -22,6 +23,7 @@ class IdeasFeed extends StatefulWidget {
 }
 
 class _IdeasFeedState extends State<IdeasFeed> {
+
   ScrollController _scrollController = new ScrollController();
 
   StreamSubscription<List<PurchaseDetails>> _subscription;
@@ -52,15 +54,33 @@ class _IdeasFeedState extends State<IdeasFeed> {
 
     final Stream purchaseUpdates =
         InAppPurchaseConnection.instance.purchaseUpdatedStream;
-    _subscription = purchaseUpdates.listen((purchases) {
-      if (purchases.length > 0) {
-        if (purchases[0].status == PurchaseStatus.purchased) {
+    _subscription = purchaseUpdates.listen((purchaseDetailsList) {
+      _listenToPurchaseUpdated(purchaseDetailsList);
+    }, onDone: () {
+      _subscription.cancel();
+    }, onError: (error) {
+      // handle error here.
+    });
+
+    retrieveProducts();
+  }
+
+  void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
+    purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+      if (purchaseDetails.status == PurchaseStatus.pending) {
+      } else {
+        if (purchaseDetails.status == PurchaseStatus.error) {
+        } else if (purchaseDetails.status == PurchaseStatus.purchased) {
           saveDarkThemeUnlocked();
           switchTheme();
         }
+        if (Platform.isIOS) {
+          InAppPurchaseConnection.instance.completePurchase(purchaseDetails);
+        } else if (Platform.isAndroid) {
+          InAppPurchaseConnection.instance.consumePurchase(purchaseDetails);
+        }
       }
     });
-    retrieveProducts();
   }
 
   Future<Null> _refresh() {
