@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:http/http.dart' show Client, Response;
 import 'dart:async';
 
-import 'package:infinidea/models/idea.dart';
+import 'package:infinideas/models/idea.dart';
 
 class TwitterClient {
   Client client = Client();

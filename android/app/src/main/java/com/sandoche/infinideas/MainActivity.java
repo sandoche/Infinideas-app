@@ -1,4 +1,4 @@
-package com.sandoche.infinidea;
+package com.sandoche.infinideas;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

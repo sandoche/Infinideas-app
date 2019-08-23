@@ -15,9 +15,9 @@ class MyApp extends StatelessWidget {
         ),
         themedWidgetBuilder: (context, theme) {
           return MaterialApp(
-            title: 'Infinidea',
+            title: 'Infinideas',
             theme: theme,
-            home: IdeasFeed(title: 'Infinidea')
+            home: IdeasFeed(title: 'Infinideas')
           );
         }
     );
