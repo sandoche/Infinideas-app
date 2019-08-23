@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:infinidea/blocs/IdeasBloc.dart';
-import 'package:infinidea/models/idea.dart';
+import 'package:infinideas/blocs/IdeasBloc.dart';
+import 'package:infinideas/models/idea.dart';
 import 'idea_item.dart';
 import 'styles.dart';
 import 'package:flutter/services.dart';
@@ -61,7 +61,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
                                 centerTitle: false,
                                 titlePadding:
                                     const EdgeInsets.only(left: 26, bottom: 40),
-                                title: Text('InfinIdea', style: getSliverAppBarTitleStyle(isDarkTheme()))),
+                                title: Text('Infinideas', style: getSliverAppBarTitleStyle(isDarkTheme()))),
                             backgroundColor:
                                 getSliverAppBarBackground(isDarkTheme()),
                             expandedHeight: 150.0,

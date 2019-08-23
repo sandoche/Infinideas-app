@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' show Client;
 import 'dart:async';
 
-import 'package:infinidea/models/idea.dart';
+import 'package:infinideas/models/idea.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ApiProvider {

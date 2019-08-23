@@ -1,5 +1,5 @@
-import 'package:infinidea/models/idea.dart';
-import 'package:infinidea/resources/api_provider.dart';
+import 'package:infinideas/models/idea.dart';
+import 'package:infinideas/resources/api_provider.dart';
 
 import 'package:rxdart/rxdart.dart';
 
