@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:infinidea/models/idea.dart';
+import 'package:infinideas/models/idea.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:share/share.dart';
 import 'styles.dart';
