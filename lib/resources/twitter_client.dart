@@ -10,7 +10,7 @@ class TwitterClient {
   String nextResults;
   bool noMoreResults = false;
 
-  Future<List<Idea>> fetch(String searchTerm, bool refresh) async {
+  Future<List<Idea>> fetch(String fromTwitterAccount, bool refresh) async {
     if (noMoreResults && !refresh) {
       return new List();
     }
@@ -19,7 +19,7 @@ class TwitterClient {
     if (nextResults != null && !refresh) {
       url += nextResults;
     } else {
-      url += "?q=%23$searchTerm&result_type=recent&count=50";
+      url += "?q=from%3A$fromTwitterAccount&result_type=recent&count=50";
     }
     final response = await client.get(
       url,
