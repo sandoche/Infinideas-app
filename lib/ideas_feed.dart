@@ -155,8 +155,8 @@ class _IdeasFeedState extends State<IdeasFeed> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: new Text("Payment"),
-            content: new Text("Unlock the darktheme !!"),
+            title: new Text("Unlock dark theme"),
+            content: new Text("Infinideas is a free app but in order to keep the app up to date we decided to sell the dark theme."),
             actions: <Widget>[
               FlatButton(
                 child: const Text('Cancel'),
@@ -165,7 +165,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
                 },
               ),
               FlatButton(
-                child: const Text('Unlock darktheme'),
+                child: const Text('Unlock dark theme'),
                 onPressed: () {
                   Navigator.of(context).pop();
                   purchaseItem();
