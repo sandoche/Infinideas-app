@@ -61,7 +61,7 @@ class About extends StatelessWidget {
                         onTap: () {},
                         child: Container(
                           margin: MARGIN_ABOUT_LINK,
-                          child: Text('🔓 Restore Darkmode Purchase',
+                          child: Text('🔓 Restore Dark Theme Purchase',
                               style: getStyleAboutMenu(isDarkTheme)),
                         )),
                   ],
