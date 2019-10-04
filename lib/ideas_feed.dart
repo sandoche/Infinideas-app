@@ -109,7 +109,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
         final QueryPurchaseDetailsResponse response =
             await InAppPurchaseConnection.instance.queryPastPurchases();
         if (response.error == null && response.pastPurchases.length > 0) {
-          if (response.pastPurchases[0].productID == "darktheme") {
+          if (response.pastPurchases[0].productID == "darkthemetest") {
             saveDarkThemeUnlocked();
             if (Platform.isIOS) {
               InAppPurchaseConnection.instance
@@ -125,7 +125,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
     final bool available = await InAppPurchaseConnection.instance.isAvailable();
     if (available) {
       ProductDetails productDetails;
-      Set<String> productsIds = <String>['darktheme'].toSet();
+      Set<String> productsIds = <String>['darkthemetest'].toSet();
       final ProductDetailsResponse response = await InAppPurchaseConnection
           .instance
           .queryProductDetails(productsIds);
