@@ -1,18 +1,20 @@
 import 'dart:async';
 import 'dart:io';
+
+import 'package:dynamic_theme/dynamic_theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:in_app_purchase/billing_client_wrappers.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:in_app_purchase/store_kit_wrappers.dart';
 import 'package:infinideas/blocs/IdeasBloc.dart';
 import 'package:infinideas/models/idea.dart';
-import 'idea_item.dart';
-import 'about.dart';
-import 'package:flutter/services.dart';
-import 'package:dynamic_theme/dynamic_theme.dart';
-import 'themes.dart';
-import 'connectivity_check.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'about.dart';
+import 'connectivity_check.dart';
+import 'idea_item.dart';
+import 'themes.dart';
 
 class IdeasFeed extends StatefulWidget {
   IdeasFeed({Key key, this.title}) : super(key: key);
@@ -23,7 +25,6 @@ class IdeasFeed extends StatefulWidget {
 }
 
 class _IdeasFeedState extends State<IdeasFeed> {
-
   ScrollController _scrollController = new ScrollController();
 
   StreamSubscription<List<PurchaseDetails>> _subscription;
@@ -51,36 +52,20 @@ class _IdeasFeedState extends State<IdeasFeed> {
         });
       }
     });
-
     final Stream purchaseUpdates =
         InAppPurchaseConnection.instance.purchaseUpdatedStream;
-    _subscription = purchaseUpdates.listen((purchaseDetailsList) {
-      _listenToPurchaseUpdated(purchaseDetailsList);
-    }, onDone: () {
-      _subscription.cancel();
-    }, onError: (error) {
-      // handle error here.
-    });
-
-    retrieveProducts();
-  }
-
-  void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
-    purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
-      if (purchaseDetails.status == PurchaseStatus.pending) {
-      } else {
-        if (purchaseDetails.status == PurchaseStatus.error) {
-        } else if (purchaseDetails.status == PurchaseStatus.purchased) {
+    _subscription = purchaseUpdates.listen((purchases) {
+      if (purchases.length > 0) {
+        if (purchases[0].productID == "testproduct" &&
+            purchases[0].status == PurchaseStatus.purchased) {
+          if (Platform.isIOS) {
+            InAppPurchaseConnection.instance.completePurchase(purchases[0]);
+          }
           saveDarkThemeUnlocked();
-          switchTheme();
-        }
-        if (Platform.isIOS) {
-          InAppPurchaseConnection.instance.completePurchase(purchaseDetails);
-        } else if (Platform.isAndroid) {
-          InAppPurchaseConnection.instance.consumePurchase(purchaseDetails);
         }
       }
     });
+    retrieveProducts();
   }
 
   Future<Null> _refresh() {
@@ -109,11 +94,13 @@ class _IdeasFeedState extends State<IdeasFeed> {
         final QueryPurchaseDetailsResponse response =
             await InAppPurchaseConnection.instance.queryPastPurchases();
         if (response.error == null && response.pastPurchases.length > 0) {
-          if (response.pastPurchases[0].productID == "darkthemetest") {
-            saveDarkThemeUnlocked();
-            if (Platform.isIOS) {
-              InAppPurchaseConnection.instance
-                  .completePurchase(response.pastPurchases[0]);
+          for (var pastPurchase in response.pastPurchases) {
+            if (pastPurchase.productID == "testproduct" &&
+                pastPurchase.status == PurchaseStatus.purchased) {
+              saveDarkThemeUnlocked();
+              if (Platform.isIOS) {
+                InAppPurchaseConnection.instance.completePurchase(pastPurchase);
+              }
             }
           }
         }
@@ -125,7 +112,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
     final bool available = await InAppPurchaseConnection.instance.isAvailable();
     if (available) {
       ProductDetails productDetails;
-      Set<String> productsIds = <String>['darkthemetest'].toSet();
+      Set<String> productsIds = <String>['testproduct'].toSet();
       final ProductDetailsResponse response = await InAppPurchaseConnection
           .instance
           .queryProductDetails(productsIds);
@@ -151,12 +138,45 @@ class _IdeasFeedState extends State<IdeasFeed> {
     if (isDarkThemeUnlocked) {
       switchTheme();
     } else {
+      showAlertDialog();
+    }
+  }
+
+  void showAlertDialog() {
+    if (Platform.isAndroid) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: new Text("Unlock dark theme"),
-            content: new Text("Infinideas is a free app but in order to keep the app up to date we decided to sell the dark theme."),
+            content: new Text(
+                "Infinideas is a free app but in order to keep the app up to date we decided to sell the dark theme."),
+            actions: <Widget>[
+              FlatButton(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                child: const Text('Unlock dark theme'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  purchaseItem();
+                },
+              )
+            ],
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: new Text("Unlock dark theme"),
+            content: new Text(
+                "Infinideas is a free app but in order to keep the app up to date we decided to sell the dark theme."),
             actions: <Widget>[
               FlatButton(
                 child: const Text('Cancel'),
