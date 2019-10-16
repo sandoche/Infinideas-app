@@ -95,10 +95,10 @@ class _IdeasFeedState extends State<IdeasFeed> {
             await InAppPurchaseConnection.instance.queryPastPurchases();
         if (response.error == null && response.pastPurchases.length > 0) {
           for (var pastPurchase in response.pastPurchases) {
-            if (pastPurchase.productID == "testproduct" &&
-                pastPurchase.status == PurchaseStatus.purchased) {
+            if (pastPurchase.productID == "testproduct") {
               saveDarkThemeUnlocked();
-              if (Platform.isIOS) {
+              if (Platform.isIOS &&
+                  pastPurchase.status == PurchaseStatus.purchased) {
                 InAppPurchaseConnection.instance.completePurchase(pastPurchase);
               }
             }

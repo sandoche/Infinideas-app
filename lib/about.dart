@@ -28,8 +28,8 @@ class About extends StatelessWidget {
           await InAppPurchaseConnection.instance.queryPastPurchases();
       if (response.error == null && response.pastPurchases.length > 0) {
         for (var pastPurchase in response.pastPurchases) {
-          if (pastPurchase.productID == "testproduct" &&
-              pastPurchase.status == PurchaseStatus.purchased) {
+          if (pastPurchase.productID == "testproduct") {
+            saveDarkThemeUnlocked();
             if (Platform.isAndroid) {
               showDialog(
                 context: context,
@@ -47,7 +47,10 @@ class About extends StatelessWidget {
                   );
                 },
               );
-            } else {
+            }
+            if (Platform.isIOS &&
+                pastPurchase.status == PurchaseStatus.purchased) {
+              InAppPurchaseConnection.instance.completePurchase(pastPurchase);
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -64,11 +67,6 @@ class About extends StatelessWidget {
                   );
                 },
               );
-            }
-            saveDarkThemeUnlocked();
-            if (Platform.isIOS) {
-              InAppPurchaseConnection.instance
-                  .completePurchase(pastPurchase);
             }
           }
         }
