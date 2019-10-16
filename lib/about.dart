@@ -35,7 +35,7 @@ class About extends StatelessWidget {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: new Text("Dark Theme purchase restored"),
+                    title: new Text("Dark Theme restored"),
                     actions: <Widget>[
                       FlatButton(
                         child: const Text('Close'),
@@ -55,7 +55,7 @@ class About extends StatelessWidget {
                 context: context,
                 builder: (BuildContext context) {
                   return CupertinoAlertDialog(
-                    title: new Text("Dark Theme purchase restored"),
+                    title: new Text("Dark Theme restored"),
                     actions: <Widget>[
                       FlatButton(
                         child: const Text('Close'),
