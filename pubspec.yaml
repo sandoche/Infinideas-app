@@ -27,7 +27,7 @@ dependencies:
   timeago: ^2.0.17
   url_launcher: ^5.1.0
   connectivity: ^0.4.3+6
-  in_app_purchase: ^0.2.0+6
+  in_app_purchase: ^0.2.1+4
   shared_preferences: ^0.5.3+4
   intl: ^0.15.8
   flutter_launcher_icons: ^0.7.2+1

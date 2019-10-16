@@ -1,4 +1,9 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'themes.dart';
 import 'styles.dart';
@@ -15,6 +20,64 @@ class About extends StatelessWidget {
   }
 
   About({Key key, @required this.isDarkTheme}) : super(key: key);
+
+  retrieveProducts(BuildContext context) async {
+    final bool available = await InAppPurchaseConnection.instance.isAvailable();
+    if (available) {
+      final QueryPurchaseDetailsResponse response =
+          await InAppPurchaseConnection.instance.queryPastPurchases();
+      if (response.error == null && response.pastPurchases.length > 0) {
+        for (var pastPurchase in response.pastPurchases) {
+          if (pastPurchase.productID == "testproduct") {
+            saveDarkThemeUnlocked();
+            if (Platform.isAndroid) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: new Text("Dark Theme restored"),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: const Text('Close'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            }
+            if (Platform.isIOS &&
+                pastPurchase.status == PurchaseStatus.purchased) {
+              InAppPurchaseConnection.instance.completePurchase(pastPurchase);
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return CupertinoAlertDialog(
+                    title: new Text("Dark Theme restored"),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: const Text('Close'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            }
+          }
+        }
+      }
+    }
+  }
+
+  void saveDarkThemeUnlocked() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setBool("darkThemeUnlocked", true);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +121,9 @@ class About extends StatelessWidget {
                               style: getStyleAboutMenu(isDarkTheme)),
                         )),
                     InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          retrieveProducts(context);
+                        },
                         child: Container(
                           margin: MARGIN_ABOUT_LINK,
                           child: Text('🔓 Restore Dark Theme Purchase',
