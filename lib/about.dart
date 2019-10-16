@@ -126,7 +126,7 @@ class About extends StatelessWidget {
                         },
                         child: Container(
                           margin: MARGIN_ABOUT_LINK,
-                          child: Text('🔓 Restore Infinideas Premium',
+                          child: Text('🔓 Restore Dark Theme Purchase',
                               style: getStyleAboutMenu(isDarkTheme)),
                         )),
                   ],
