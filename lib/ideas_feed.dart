@@ -56,7 +56,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
         InAppPurchaseConnection.instance.purchaseUpdatedStream;
     _subscription = purchaseUpdates.listen((purchases) {
       if (purchases.length > 0) {
-        if (purchases[0].productID == "testproduct" &&
+        if (purchases[0].productID == "com.sandoche.infinideas.darkmode" &&
             purchases[0].status == PurchaseStatus.purchased) {
           if (Platform.isIOS) {
             InAppPurchaseConnection.instance.completePurchase(purchases[0]);
@@ -66,11 +66,6 @@ class _IdeasFeedState extends State<IdeasFeed> {
       }
     });
     retrieveProducts();
-  }
-
-  Future<Null> _refresh() {
-    displayAlertWhenNoConnection(context);
-    return bloc.fetch(true);
   }
 
   fetchNewItems() async {
@@ -95,7 +90,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
             await InAppPurchaseConnection.instance.queryPastPurchases();
         if (response.error == null && response.pastPurchases.length > 0) {
           for (var pastPurchase in response.pastPurchases) {
-            if (pastPurchase.productID == "testproduct") {
+            if (pastPurchase.productID == "com.sandoche.infinideas.darkmode") {
               saveDarkThemeUnlocked();
               if (Platform.isIOS &&
                   pastPurchase.status == PurchaseStatus.purchased) {
@@ -112,7 +107,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
     final bool available = await InAppPurchaseConnection.instance.isAvailable();
     if (available) {
       ProductDetails productDetails;
-      Set<String> productsIds = <String>['testproduct'].toSet();
+      Set<String> productsIds = <String>['com.sandoche.infinideas.darkmode'].toSet();
       final ProductDetailsResponse response = await InAppPurchaseConnection
           .instance
           .queryProductDetails(productsIds);
