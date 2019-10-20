@@ -244,52 +244,51 @@ class _IdeasFeedState extends State<IdeasFeed> {
           stream: bloc.ideasStream,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return RefreshIndicator(
-                  onRefresh: _refresh,
-                  child: CustomScrollView(
-                      controller: _scrollController,
-                      slivers: <Widget>[
-                        SliverAppBar(
-                            flexibleSpace: FlexibleSpaceBar(
-                                centerTitle: false,
-                                titlePadding:
-                                    const EdgeInsets.only(left: 26, bottom: 40),
-                                title: Text('Infinideas',
-                                    style: getSliverAppBarTitleStyle(
-                                        isDarkTheme()))),
-                            backgroundColor:
-                                getSliverAppBarBackground(isDarkTheme()),
-                            expandedHeight: 150.0,
-                            actions: <Widget>[
-                              IconButton(
-                                icon: Icon(Icons.brightness_6),
-                                color: getMenuIconColor(isDarkTheme()),
-                                tooltip: 'Toggle Theme',
-                                onPressed: () {
-                                  toggleTheme();
-                                },
-                              ),
-                              IconButton(
-                                  icon: Icon(Icons.info),
-                                  color: getMenuIconColor(isDarkTheme()),
-                                  tooltip: 'About',
-                                  onPressed: () {
-                                    _openAboutPage(context, isDarkTheme());
-                                  }),
-                            ]),
-                        SliverList(
-                            delegate: new SliverChildBuilderDelegate(
-                                (BuildContext context, int index) {
-                          if (snapshot.data[index].isLast) {
-                            return _loader();
-                          } else {
-                            return IdeaItem(
-                              isDarkTheme: isDarkTheme(),
-                              idea: snapshot.data[index],
-                            );
-                          }
-                        }, childCount: snapshot.data.length))
-                      ]));
+              return CustomScrollView(
+                  controller: _scrollController,
+                  slivers: <Widget>[
+                    SliverAppBar(
+                        flexibleSpace: FlexibleSpaceBar(
+                            centerTitle: false,
+                            titlePadding:
+                                const EdgeInsets.only(left: 26, bottom: 40),
+                            title: Text('Infinideas',
+                                style:
+                                    getSliverAppBarTitleStyle(isDarkTheme()))),
+                        backgroundColor:
+                            getSliverAppBarBackground(isDarkTheme()),
+                        expandedHeight: 150.0,
+                        brightness: getAppBarBrightness(isDarkTheme()),
+                        actions: <Widget>[
+                          IconButton(
+                            icon: Icon(Icons.brightness_6),
+                            color: getMenuIconColor(isDarkTheme()),
+                            tooltip: 'Toggle Theme',
+                            onPressed: () {
+                              toggleTheme();
+                            },
+                          ),
+                          IconButton(
+                              icon: Icon(Icons.info),
+                              color: getMenuIconColor(isDarkTheme()),
+                              tooltip: 'About',
+                              onPressed: () {
+                                _openAboutPage(context, isDarkTheme());
+                              }),
+                        ]),
+                    SliverList(
+                        delegate: new SliverChildBuilderDelegate(
+                            (BuildContext context, int index) {
+                      if (snapshot.data[index].isLast) {
+                        return _loader();
+                      } else {
+                        return IdeaItem(
+                          isDarkTheme: isDarkTheme(),
+                          idea: snapshot.data[index],
+                        );
+                      }
+                    }, childCount: snapshot.data.length))
+                  ]);
             } else {
               return Center(child: CircularProgressIndicator());
             }

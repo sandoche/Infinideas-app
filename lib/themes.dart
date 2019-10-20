@@ -37,6 +37,14 @@ getSliverAppBarTitleStyle(isDarkmode) {
   }
 }
 
+getAppBarBrightness(isDarkmode) {
+  if(isDarkmode) {
+    return Brightness.dark;
+  } else {
+    return Brightness.light;
+  }
+}
+
 getMenuIconColor(isDarkmode) {
   if(isDarkmode) {
     return Colors.white;

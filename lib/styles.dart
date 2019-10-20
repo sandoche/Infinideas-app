@@ -20,7 +20,7 @@ const STYLE_TEXT_TAG = TextStyle(
 
 const STYLE_TITLES = TextStyle(
   fontSize: 22.0,
-  fontWeight: FontWeight.w900
+  fontWeight: FontWeight.w700
 );
 
 const STYLE_METADATA_LIGHT_THEME = TextStyle(
@@ -34,13 +34,13 @@ const STYLE_METADATA_DARK_THEME = TextStyle(
 const STYLE_APP_TITLE_LIGHT_THEME = TextStyle(
   color: COLOR_DARK,
   fontSize: 24.0,
-  fontWeight: FontWeight.w900
+  fontWeight: FontWeight.w700
 );
 
 const STYLE_APP_TITLE_DARK_THEME = TextStyle(
   color: Colors.white,
   fontSize: 24.0,
-  fontWeight: FontWeight.w900
+  fontWeight: FontWeight.w700
 );
 
 const STYLE_TEXT_LIGHT_THEME = TextStyle(
