@@ -63,7 +63,7 @@ class IdeaItem extends StatelessWidget {
                     icon: Icon(Icons.share),
                     onPressed: () {
                       Share.share('Hey, I just discovered this cool idea '
-                          'thanks to the Infinidea app (https://infinideas.learn.uno) '
+                          'thanks to the Infinideas app (https://infinideas.learn.uno) '
                           '💡 ${idea.url}');
                     },
                   )

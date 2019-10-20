@@ -143,9 +143,9 @@ class _IdeasFeedState extends State<IdeasFeed> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: new Text("Unlock dark theme"),
+            title: new Text("Unlock Dark Theme"),
             content: new Text(
-                "Infinideas is a free app but in order to keep the app up to date we decided to sell the dark theme."),
+                "Infinideas is a free app but in order to keep the app up to date we decided to sell the Dark Theme."),
             actions: <Widget>[
               FlatButton(
                 child: const Text('Cancel'),
@@ -154,7 +154,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
                 },
               ),
               FlatButton(
-                child: const Text('Unlock dark theme'),
+                child: const Text('Unlock Dark Theme'),
                 onPressed: () {
                   Navigator.of(context).pop();
                   purchaseItem();
@@ -169,9 +169,9 @@ class _IdeasFeedState extends State<IdeasFeed> {
         context: context,
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
-            title: new Text("Unlock dark theme"),
+            title: new Text("Unlock Dark Theme"),
             content: new Text(
-                "Infinideas is a free app but in order to keep the app up to date we decided to sell the dark theme."),
+                "Infinideas is a free app but in order to keep the app up to date we decided to sell the Dark Theme."),
             actions: <Widget>[
               FlatButton(
                 child: const Text('Cancel'),
@@ -180,7 +180,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
                 },
               ),
               FlatButton(
-                child: const Text('Unlock dark theme'),
+                child: const Text('Unlock Dark Theme'),
                 onPressed: () {
                   Navigator.of(context).pop();
                   purchaseItem();
