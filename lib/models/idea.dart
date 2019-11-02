@@ -10,23 +10,36 @@ class Idea {
   int _votes;
   bool _isLast = false;
 
+  Idea.fromDB(this._url, this._title, this._description, this._source, this._votes, this._timestamp);
+
   Idea(bool isLast) {
     this._isLast = isLast;
   }
 
   get title => _title;
-
   get description => _description;
-
   int get votes => _votes;
-
   String get url => _url;
-
   int get timestamp => _timestamp;
-
   bool get isLast => _isLast;
-
   String get source => _source;
+
+
+  Map<String, dynamic> toMap() {
+    return {
+      'url': url,
+      'title': title,
+      'description': description,
+      'source' : source,
+      'votes': votes,
+      'timestamp': timestamp
+    };
+  }
+
+  @override
+  String toString() {
+    return 'Idea{url: $url, title: $title, description: $description, source: $source, votes: $votes}';
+  }
 }
 
 class RedditIdea extends Idea {
