@@ -21,23 +21,38 @@ class IdeaItem extends StatelessWidget {
         _openWebView(context, idea, isDarkTheme);
       },
       child: Padding(
-          padding: const EdgeInsets.all(28.0),
+          padding: const EdgeInsets.only(left: 18, top: 28, right: 28, bottom: 28),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Chip(
-                  label: Text(idea.votes.toString() + ' UPVOTES'),
-                  backgroundColor: getLabelBackgroundColor(idea.votes),
-                  labelStyle: STYLE_TEXT_TAG),
-              Text(idea.title, style: STYLE_TITLES),
-              idea.description != ''
-                  ? Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Text(idea.description,
-                          maxLines: 3, overflow: TextOverflow.ellipsis))
-                  : Container(),
-              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Chip(
+                          label: Text(idea.votes.toString() + ' UPVOTES'),
+                          backgroundColor: getLabelBackgroundColor(idea.votes),
+                          labelStyle: STYLE_TEXT_TAG),
+                      Text(idea.title, style: STYLE_TITLES),
+                      idea.description != ''
+                          ? Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(idea.description,
+                              maxLines: 3, overflow: TextOverflow.ellipsis))
+                          : Container(),
+                      SizedBox(height: 10)
+                    ]),
+                ),
               Row(children: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.favorite_border),
+                  color: getMenuIconColor(isDarkTheme),
+                  tooltip: 'Favourites',
+                  alignment: Alignment.centerLeft,
+                  onPressed: () {
+                    //toggleTheme();
+                  },),
                 Text(idea.source, style: getStyleMeta(isDarkTheme)),
                 Text(' • ', style: getStyleMeta(isDarkTheme)),
                 Text(timeago.format(new DateTime.fromMillisecondsSinceEpoch(idea.timestamp)), style: getStyleMeta(isDarkTheme)),

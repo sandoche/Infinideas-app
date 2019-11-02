@@ -256,6 +256,14 @@ class _IdeasFeedState extends State<IdeasFeed> {
                         brightness: getAppBarBrightness(isDarkTheme()),
                         actions: <Widget>[
                           IconButton(
+                            icon: Icon(Icons.favorite_border),
+                            color: getMenuIconColor(isDarkTheme()),
+                            tooltip: 'Favourites',
+                            onPressed: () {
+                              //toggleTheme();
+                            },
+                          ),
+                          IconButton(
                             icon: Icon(Icons.brightness_6),
                             color: getMenuIconColor(isDarkTheme()),
                             tooltip: 'Toggle Theme',
