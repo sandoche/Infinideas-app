@@ -29,7 +29,7 @@ void main() async {
     final Database db = await database;
     final List<Map<String, dynamic>> maps = await db.query('ideas');
     return List.generate(maps.length, (i) {
-      return new Idea.fromDB(maps[i]['url'], maps[i]['title'], maps[i]['description'], maps[i]['source'], maps[i]['votes'], maps[i]['timestamp']);
+      return new Idea.fromDB(maps[i]['url'], maps[i]['title'], maps[i]['description'], maps[i]['source'], maps[i]['votes'], maps[i]['timestamp'], true);
     });
   }
 

@@ -7,11 +7,31 @@ import 'themes.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'connectivity_check.dart';
 
-class IdeaItem extends StatelessWidget {
+class IdeaItem extends StatefulWidget {
+
+
+  //const IdeaItem({Key key, this.idea, this.isDarkTheme}) : super(key: key);
+
+  IdeaItem({Key key, this.idea, this.isDarkTheme}) : super(key: key);
   final Idea idea;
   final bool isDarkTheme;
 
-  const IdeaItem({Key key, this.idea, this.isDarkTheme}) : super(key: key);
+  @override
+  _IdeaItemState createState() => _IdeaItemState(this.idea, this.isDarkTheme, idea.isFavorite);
+}
+
+class _IdeaItemState extends State<IdeaItem> {
+
+  _IdeaItemState(this.idea, this.isDarkTheme, this.isFavorite);
+
+  final Idea idea;
+  final bool isDarkTheme;
+  bool isFavorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,15 +63,15 @@ class IdeaItem extends StatelessWidget {
                           : Container(),
                       SizedBox(height: 10)
                     ]),
-                ),
+              ),
               Row(children: <Widget>[
                 IconButton(
-                  icon: Icon(Icons.favorite_border),
+                  icon: getIconForIdea(),
                   color: getMenuIconColor(isDarkTheme),
                   tooltip: 'Favourites',
                   alignment: Alignment.centerLeft,
                   onPressed: () {
-                    //toggleTheme();
+                    toggleFavoriteIcon(idea);
                   },),
                 Text(idea.source, style: getStyleMeta(isDarkTheme)),
                 Text(' • ', style: getStyleMeta(isDarkTheme)),
@@ -60,6 +80,24 @@ class IdeaItem extends StatelessWidget {
             ],
           )),
     );
+  }
+
+  Icon getIconForIdea() {
+    if (isFavorite) {
+      return Icon(Icons.favorite);
+    }
+    return Icon(Icons.favorite_border);
+  }
+
+  void toggleFavoriteIcon(Idea idea) {
+    if (idea.isFavorite) {
+      idea.removeFromFavorites();
+    } else {
+      idea.addToFavorites();
+    }
+    setState(() {
+      this.isFavorite = !this.isFavorite;
+    });
   }
 
   Future<void> _openWebView(BuildContext context, Idea idea, bool isDarkTheme) async {
@@ -88,6 +126,8 @@ class IdeaItem extends StatelessWidget {
       );
     } else {
       displayAlertWhenNoConnection(context);
-    }    
+    }
   }
 }
+
+
