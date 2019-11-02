@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'package:intl/intl.dart';
+import 'package:infinideas/models/ideas_db.dart';
 
 class Idea {
   int _timestamp;
@@ -9,9 +10,8 @@ class Idea {
   String _source;
   int _votes;
   bool _isLast = false;
-  bool _isFavorite = false;
 
-  Idea.fromDB(this._url, this._title, this._description, this._source, this._votes, this._timestamp, this._isFavorite);
+  Idea.fromDB(this._url, this._title, this._description, this._source, this._votes, this._timestamp);
 
   Idea(bool isLast) {
     this._isLast = isLast;
@@ -23,7 +23,6 @@ class Idea {
   String get url => _url;
   int get timestamp => _timestamp;
   bool get isLast => _isLast;
-  bool get isFavorite => _isFavorite;
   String get source => _source;
 
 
@@ -41,14 +40,6 @@ class Idea {
   @override
   String toString() {
     return 'Idea{url: $url, title: $title, description: $description, source: $source, votes: $votes}';
-  }
-
-  removeFromFavorites() {
-    this._isFavorite = false;
-  }
-
-  addToFavorites() {
-    this._isFavorite = true;
   }
 }
 

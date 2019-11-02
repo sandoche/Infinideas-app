@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:infinideas/models/idea.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:infinideas/models/ideas_db.dart';
 import 'package:share/share.dart';
 import 'styles.dart';
 import 'themes.dart';
@@ -17,13 +18,14 @@ class IdeaItem extends StatefulWidget {
   final bool isDarkTheme;
 
   @override
-  _IdeaItemState createState() => _IdeaItemState(this.idea, this.isDarkTheme, idea.isFavorite);
+  _IdeaItemState createState() => _IdeaItemState(this.idea, this.isDarkTheme);
 }
 
 class _IdeaItemState extends State<IdeaItem> {
 
-  _IdeaItemState(this.idea, this.isDarkTheme, this.isFavorite);
+  _IdeaItemState(this.idea, this.isDarkTheme);
 
+  final IdeasDB db = IdeasDB.db;
   final Idea idea;
   final bool isDarkTheme;
   bool isFavorite = false;
@@ -31,6 +33,14 @@ class _IdeaItemState extends State<IdeaItem> {
   @override
   void initState() {
     super.initState();
+    favoriteInitialState(idea.url);
+  }
+
+  Future <void> favoriteInitialState(String url) async {
+    bool ideaExists = await db.existIdeaWithUrl(url);
+    setState(() {
+      isFavorite = ideaExists;
+    });
   }
 
   @override
@@ -68,7 +78,7 @@ class _IdeaItemState extends State<IdeaItem> {
                 IconButton(
                   icon: getIconForIdea(),
                   color: getMenuIconColor(isDarkTheme),
-                  tooltip: 'Favourites',
+                  tooltip: 'Favorite',
                   alignment: Alignment.centerLeft,
                   onPressed: () {
                     toggleFavoriteIcon(idea);
@@ -90,10 +100,12 @@ class _IdeaItemState extends State<IdeaItem> {
   }
 
   void toggleFavoriteIcon(Idea idea) {
-    if (idea.isFavorite) {
-      idea.removeFromFavorites();
+    if (this.isFavorite) {
+      db.deleteIdea(idea.url);
+      //idea.removeFromFavorites();
     } else {
-      idea.addToFavorites();
+      db.insertIdea(idea);
+      //idea.addToFavorites();
     }
     setState(() {
       this.isFavorite = !this.isFavorite;
