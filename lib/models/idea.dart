@@ -1,6 +1,5 @@
 import 'dart:core';
 import 'package:intl/intl.dart';
-import 'package:infinideas/models/ideas_db.dart';
 
 class Idea {
   int _timestamp;

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:infinideas/blocs/favorite_bloc.dart';
 import 'package:infinideas/models/idea.dart';
 import 'package:infinideas/idea_item.dart';
-import 'package:infinideas/models/dark_theme_handler.dart';
-import 'themes.dart';
-import 'styles.dart';
 
 class FavoriteScreen extends StatelessWidget {
+  final bool isDarkTheme;
+
+  FavoriteScreen({Key key, @required this.isDarkTheme}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,6 @@ class FavoriteScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               final idea = favorites[index];
               return IdeaItem(
-                isDarkTheme: true,
                 idea: idea,
               );
             },

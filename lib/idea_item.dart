@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:infinideas/models/dark_theme_handler.dart';
 import 'package:infinideas/models/idea.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:share/share.dart';
@@ -10,25 +11,25 @@ import 'package:infinideas/blocs/favorite_bloc.dart';
 
 class IdeaItem extends StatefulWidget {
 
-  IdeaItem({Key key, this.idea, this.isDarkTheme}) : super(key: key);
+  IdeaItem({Key key, this.idea}) : super(key: key);
   final Idea idea;
-  final bool isDarkTheme;
 
   @override
-  _IdeaItemState createState() => _IdeaItemState(this.idea, this.isDarkTheme);
+  _IdeaItemState createState() => _IdeaItemState(this.idea);
 }
 
 class _IdeaItemState extends State<IdeaItem> {
 
-  _IdeaItemState(this.idea, this.isDarkTheme);
+  _IdeaItemState(this.idea);
 
   final Idea idea;
-  final bool isDarkTheme;
+  DarkTheme darkTheme;
   bool isFavorite = false;
 
   @override
   void initState() {
     super.initState();
+    darkTheme = DarkTheme(context);
     favoriteInitialState(idea);
   }
 
@@ -44,7 +45,7 @@ class _IdeaItemState extends State<IdeaItem> {
 
     return InkWell(
       onTap: () {
-        _openWebView(context, idea, isDarkTheme);
+        _openWebView(context, idea, darkTheme.isDarkTheme());
       },
       child: Padding(
           padding: const EdgeInsets.only(left: 18, top: 28, right: 28, bottom: 28),
@@ -73,15 +74,15 @@ class _IdeaItemState extends State<IdeaItem> {
               Row(children: <Widget>[
                 IconButton(
                   icon: getIconForIdea(),
-                  color: getMenuIconColor(isDarkTheme),
+                  color: getMenuIconColor(darkTheme.isDarkTheme()),
                   tooltip: 'Favorite',
                   alignment: Alignment.centerLeft,
                   onPressed: () {
                     toggleFavoriteIcon(idea);
                   },),
-                Text(idea.source, style: getStyleMeta(isDarkTheme)),
-                Text(' • ', style: getStyleMeta(isDarkTheme)),
-                Text(timeago.format(new DateTime.fromMillisecondsSinceEpoch(idea.timestamp)), style: getStyleMeta(isDarkTheme)),
+                Text(idea.source, style: getStyleMeta(darkTheme.isDarkTheme())),
+                Text(' • ', style: getStyleMeta(darkTheme.isDarkTheme())),
+                Text(timeago.format(new DateTime.fromMillisecondsSinceEpoch(idea.timestamp)), style: getStyleMeta(darkTheme.isDarkTheme())),
               ])
             ],
           )),

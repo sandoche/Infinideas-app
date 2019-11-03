@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:in_app_purchase/billing_client_wrappers.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:infinideas/blocs/IdeasBloc.dart';
 import 'package:infinideas/models/dark_theme_handler.dart';
@@ -13,7 +10,6 @@ import 'package:infinideas/models/idea.dart';
 import 'package:infinideas/favorites_screen.dart';
 import 'package:infinideas/models/premium_handler.dart';
 import 'package:infinideas/resources/alerts_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'about.dart';
 import 'connectivity_check.dart';
@@ -91,8 +87,9 @@ class _IdeasFeedState extends State<IdeasFeed> {
                             icon: Icon(Icons.favorite_border),
                             color: getMenuIconColor(darkTheme.isDarkTheme()),
                             tooltip: 'Favourites',
-                            onPressed: () => Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (_) => FavoriteScreen())),
+                            onPressed: () {
+                              clickOnFavorites();
+                            }
                           ),
                           IconButton(
                             icon: Icon(Icons.brightness_6),
@@ -117,7 +114,6 @@ class _IdeasFeedState extends State<IdeasFeed> {
                         return _loader();
                       } else {
                         return IdeaItem(
-                          isDarkTheme: darkTheme.isDarkTheme(),
                           idea: snapshot.data[index],
                         );
                       }
@@ -169,7 +165,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
   Future clickOnFavorites() async {
     bool isPrimiumUnlocked = await this.primium.isPremiumUnlocked();
     if (isPrimiumUnlocked) {
-      _openFavoritesPage(context);
+      _openFavoritesPage(context, this.darkTheme.isDarkTheme());
     } else {
       showUnlockPremiumAlert("Favorites");
     }
@@ -187,10 +183,10 @@ class _IdeasFeedState extends State<IdeasFeed> {
         });
   }
 
-  void _openFavoritesPage(BuildContext context) {
+  void _openFavoritesPage(BuildContext context, bool isDarkTheme) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => FavoriteScreen()),
+      MaterialPageRoute(builder: (context) => FavoriteScreen(isDarkTheme: isDarkTheme)),
     );
   }
 
