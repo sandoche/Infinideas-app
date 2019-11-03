@@ -83,8 +83,7 @@ class About extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text('About'),
-            backgroundColor: getAppBarBackground(isDarkTheme)),
+            title: Text('About')),
         body: Container(
             margin: const EdgeInsets.all(30.0),
             child: Column(

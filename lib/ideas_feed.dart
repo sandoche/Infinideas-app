@@ -8,8 +8,11 @@ import 'package:flutter/services.dart';
 import 'package:in_app_purchase/billing_client_wrappers.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:infinideas/blocs/IdeasBloc.dart';
+import 'package:infinideas/models/dark_theme_handler.dart';
 import 'package:infinideas/models/idea.dart';
 import 'package:infinideas/favorites_screen.dart';
+import 'package:infinideas/models/premium_handler.dart';
+import 'package:infinideas/resources/alerts_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'about.dart';
@@ -30,6 +33,8 @@ class _IdeasFeedState extends State<IdeasFeed> {
 
   StreamSubscription<List<PurchaseDetails>> _subscription;
   bool loadingNewItems = false;
+  DarkTheme darkTheme;
+  PremiumHandler primium;
 
   @override
   void dispose() {
@@ -41,7 +46,9 @@ class _IdeasFeedState extends State<IdeasFeed> {
   void initState() {
     super.initState();
     displayAlertWhenNoConnection(context);
-    setDefaultTheme();
+    darkTheme = DarkTheme(context);
+    darkTheme.setDefaultTheme();
+    primium = PremiumHandler();
     bloc.fetch(true);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -53,184 +60,8 @@ class _IdeasFeedState extends State<IdeasFeed> {
         });
       }
     });
-    final Stream purchaseUpdates =
-        InAppPurchaseConnection.instance.purchaseUpdatedStream;
-    _subscription = purchaseUpdates.listen((purchases) {
-      if (purchases.length > 0) {
-        if (purchases[0].productID == "com.sandoche.infinideas.darkmode" &&
-            purchases[0].status == PurchaseStatus.purchased) {
-          if (Platform.isIOS) {
-            InAppPurchaseConnection.instance.completePurchase(purchases[0]);
-          }
-          saveDarkThemeUnlocked();
-        }
-      }
-    });
-    retrieveProducts();
-  }
-
-  fetchNewItems() async {
-    bool isDoneFetching = await bloc.fetch(false);
-    if (isDoneFetching) {
-      setState(() {
-        loadingNewItems = false;
-      });
-    }
-  }
-
-  bool isDarkTheme() {
-    return Theme.of(context).brightness == Brightness.dark;
-  }
-
-  retrieveProducts() async {
-    final bool available = await InAppPurchaseConnection.instance.isAvailable();
-    if (available) {
-      bool isDarkThemeUnlocked = await this.isDarkThemeUnlocked();
-      if (!isDarkThemeUnlocked) {
-        final QueryPurchaseDetailsResponse response =
-            await InAppPurchaseConnection.instance.queryPastPurchases();
-        if (response.error == null && response.pastPurchases.length > 0) {
-          for (var pastPurchase in response.pastPurchases) {
-            if (pastPurchase.productID == "com.sandoche.infinideas.darkmode") {
-              saveDarkThemeUnlocked();
-              if (Platform.isIOS &&
-                  pastPurchase.status == PurchaseStatus.purchased) {
-                InAppPurchaseConnection.instance.completePurchase(pastPurchase);
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  Future purchaseItem() async {
-    final bool available = await InAppPurchaseConnection.instance.isAvailable();
-    if (available) {
-      ProductDetails productDetails;
-      Set<String> productsIds = <String>['com.sandoche.infinideas.darkmode'].toSet();
-      final ProductDetailsResponse response = await InAppPurchaseConnection
-          .instance
-          .queryProductDetails(productsIds);
-      if (response.notFoundIDs.isNotEmpty) {}
-      productDetails = response.productDetails[0];
-      final PurchaseParam purchaseParam =
-          PurchaseParam(productDetails: productDetails);
-      if ((Platform.isIOS &&
-              productDetails.skProduct.subscriptionPeriod == null) ||
-          (Platform.isAndroid &&
-              productDetails.skuDetail.type == SkuType.subs)) {
-        InAppPurchaseConnection.instance
-            .buyConsumable(purchaseParam: purchaseParam);
-      } else {
-        InAppPurchaseConnection.instance
-            .buyNonConsumable(purchaseParam: purchaseParam);
-      }
-    }
-  }
-
-  Future toggleTheme() async {
-    bool isDarkThemeUnlocked = await this.isDarkThemeUnlocked();
-    if (isDarkThemeUnlocked) {
-      switchTheme();
-    } else {
-      showAlertDialog();
-    }
-  }
-
-  void showAlertDialog() {
-    if (Platform.isAndroid) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: new Text("Unlock Dark Theme"),
-            content: new Text(
-                "Infinideas is a free app but in order to keep the app up to date we decided to sell the Dark Theme."),
-            actions: <Widget>[
-              FlatButton(
-                child: const Text('Cancel'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              FlatButton(
-                child: const Text('Unlock Dark Theme'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  purchaseItem();
-                },
-              )
-            ],
-          );
-        },
-      );
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return CupertinoAlertDialog(
-            title: new Text("Unlock Dark Theme"),
-            content: new Text(
-                "Infinideas is a free app but in order to keep the app up to date we decided to sell the Dark Theme."),
-            actions: <Widget>[
-              FlatButton(
-                child: const Text('Cancel'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              FlatButton(
-                child: const Text('Unlock Dark Theme'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  purchaseItem();
-                },
-              )
-            ],
-          );
-        },
-      );
-    }
-  }
-
-  Future<bool> isDarkThemeUnlocked() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    bool isDarkThemeUnlocked = sharedPreferences.getBool("darkThemeUnlocked");
-    return isDarkThemeUnlocked == null ? false : isDarkThemeUnlocked;
-  }
-
-  void saveDarkThemeUnlocked() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setBool("darkThemeUnlocked", true);
-  }
-
-  void saveDefaultTheme(bool isDarkTheme) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setBool("isDefaultThemeDark", isDarkTheme);
-  }
-
-  void switchTheme() {
-    saveDefaultTheme(!isDarkTheme());
-    DynamicTheme.of(context)
-        .setThemeData(isDarkTheme() ? lightTheme : darkTheme);
-  }
-
-  setDefaultTheme() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    bool isDefaultThemeDark =
-        sharedPreferences.getBool("isDefaultThemeDark") == null
-            ? false
-            : sharedPreferences.getBool("isDefaultThemeDark");
-    ThemeData defaultTheme = isDefaultThemeDark ? darkTheme : lightTheme;
-    DynamicTheme.of(context).setThemeData(defaultTheme);
-  }
-
-  void _openAboutPage(BuildContext context, bool isDarkTheme) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => About(isDarkTheme: isDarkTheme)),
-    );
+    _subscription = primium.getPurchaseSubscription();
+    primium.retrieveProducts();
   }
 
   @override
@@ -250,22 +81,22 @@ class _IdeasFeedState extends State<IdeasFeed> {
                                 const EdgeInsets.only(left: 26, bottom: 40),
                             title: Text('Infinideas',
                                 style:
-                                    getSliverAppBarTitleStyle(isDarkTheme()))),
+                                    getSliverAppBarTitleStyle(darkTheme.isDarkTheme()))),
                         backgroundColor:
-                            getSliverAppBarBackground(isDarkTheme()),
+                            getSliverAppBarBackground(darkTheme.isDarkTheme()),
                         expandedHeight: 150.0,
-                        brightness: getAppBarBrightness(isDarkTheme()),
+                        brightness: getAppBarBrightness(darkTheme.isDarkTheme()),
                         actions: <Widget>[
                           IconButton(
                             icon: Icon(Icons.favorite_border),
-                            color: getMenuIconColor(isDarkTheme()),
+                            color: getMenuIconColor(darkTheme.isDarkTheme()),
                             tooltip: 'Favourites',
                             onPressed: () => Navigator.of(context)
                               .push(MaterialPageRoute(builder: (_) => FavoriteScreen())),
                           ),
                           IconButton(
                             icon: Icon(Icons.brightness_6),
-                            color: getMenuIconColor(isDarkTheme()),
+                            color: getMenuIconColor(darkTheme.isDarkTheme()),
                             tooltip: 'Toggle Theme',
                             onPressed: () {
                               toggleTheme();
@@ -273,10 +104,10 @@ class _IdeasFeedState extends State<IdeasFeed> {
                           ),
                           IconButton(
                               icon: Icon(Icons.info),
-                              color: getMenuIconColor(isDarkTheme()),
+                              color: getMenuIconColor(darkTheme.isDarkTheme()),
                               tooltip: 'About',
                               onPressed: () {
-                                _openAboutPage(context, isDarkTheme());
+                                _openAboutPage(context, darkTheme.isDarkTheme());
                               }),
                         ]),
                     SliverList(
@@ -286,7 +117,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
                         return _loader();
                       } else {
                         return IdeaItem(
-                          isDarkTheme: isDarkTheme(),
+                          isDarkTheme: darkTheme.isDarkTheme(),
                           idea: snapshot.data[index],
                         );
                       }
@@ -314,5 +145,59 @@ class _IdeasFeedState extends State<IdeasFeed> {
             width: 70.0,
             height: 50.0,
           );
+  }
+
+
+  fetchNewItems() async {
+    bool isDoneFetching = await bloc.fetch(false);
+    if (isDoneFetching) {
+      setState(() {
+        loadingNewItems = false;
+      });
+    }
+  }
+
+  Future toggleTheme() async {
+    bool isPrimiumUnlocked = await this.primium.isPremiumUnlocked();
+    if (isPrimiumUnlocked) {
+      darkTheme.switchTheme();
+    } else {
+      showUnlockPremiumAlert("Dark Theme");
+    }
+  }
+
+  Future clickOnFavorites() async {
+    bool isPrimiumUnlocked = await this.primium.isPremiumUnlocked();
+    if (isPrimiumUnlocked) {
+      _openFavoritesPage(context);
+    } else {
+      showUnlockPremiumAlert("Favorites");
+    }
+  }
+
+  void showUnlockPremiumAlert(String toUnlock) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          if (Platform.isAndroid) {
+            return AlertsProvider(context).getAlertForAndroidPremium(primium, toUnlock);
+          } else {
+            return AlertsProvider(context).getAlertForiOSPremium(primium, toUnlock);
+          }
+        });
+  }
+
+  void _openFavoritesPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => FavoriteScreen()),
+    );
+  }
+
+  void _openAboutPage(BuildContext context, bool isDarkTheme) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => About(isDarkTheme: isDarkTheme)),
+    );
   }
 }

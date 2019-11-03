@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'styles.dart';
 
 var lightTheme = new ThemeData(
+    appBarTheme: AppBarTheme(
+      color: Color(0xff65638f),
+    ),
     brightness: Brightness.light,
-    accentColor: Colors.red
+    accentColor: Colors.blue,
 );
 
 var darkTheme = new ThemeData(
