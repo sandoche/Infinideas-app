@@ -28,11 +28,12 @@ class FavoriteScreen extends StatelessWidget {
 
           return ListView.builder (
               itemCount: favorites.length,
-            itemBuilder: (context, index) {
-              final idea = favorites[index];
-              return IdeaItem(
-                idea: idea,
-              );
+              itemBuilder: (context, index) {
+                final reversedFavorites = favorites.reversed.toList();
+                final idea = reversedFavorites[index];
+                return IdeaItem(
+                  idea: idea,
+                );
             },
           );
         },
