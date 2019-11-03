@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:infinideas/models/idea.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:infinideas/models/ideas_db.dart';
 import 'package:share/share.dart';
 import 'styles.dart';
 import 'themes.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'connectivity_check.dart';
+import 'package:infinideas/blocs/favorite_bloc.dart';
 
 class IdeaItem extends StatefulWidget {
-
-
-  //const IdeaItem({Key key, this.idea, this.isDarkTheme}) : super(key: key);
 
   IdeaItem({Key key, this.idea, this.isDarkTheme}) : super(key: key);
   final Idea idea;
@@ -25,7 +22,6 @@ class _IdeaItemState extends State<IdeaItem> {
 
   _IdeaItemState(this.idea, this.isDarkTheme);
 
-  final IdeasDB db = IdeasDB.db;
   final Idea idea;
   final bool isDarkTheme;
   bool isFavorite = false;
@@ -33,11 +29,11 @@ class _IdeaItemState extends State<IdeaItem> {
   @override
   void initState() {
     super.initState();
-    favoriteInitialState(idea.url);
+    favoriteInitialState(idea);
   }
 
-  Future <void> favoriteInitialState(String url) async {
-    bool ideaExists = await db.existIdeaWithUrl(url);
+  Future <void> favoriteInitialState(Idea idea) async {
+    bool ideaExists = await favoritesBloc.ideaAlreadyExists(idea);
     setState(() {
       isFavorite = ideaExists;
     });
@@ -100,13 +96,7 @@ class _IdeaItemState extends State<IdeaItem> {
   }
 
   void toggleFavoriteIcon(Idea idea) {
-    if (this.isFavorite) {
-      db.deleteIdea(idea.url);
-      //idea.removeFromFavorites();
-    } else {
-      db.insertIdea(idea);
-      //idea.addToFavorites();
-    }
+    favoritesBloc.toggleIdea(idea);
     setState(() {
       this.isFavorite = !this.isFavorite;
     });

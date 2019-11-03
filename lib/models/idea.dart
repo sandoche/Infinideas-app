@@ -41,6 +41,14 @@ class Idea {
   String toString() {
     return 'Idea{url: $url, title: $title, description: $description, source: $source, votes: $votes}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is Idea && runtimeType == other.runtimeType && url == other.url;
+
+  @override
+  int get hashCode => url.hashCode;
 }
 
 class RedditIdea extends Idea {

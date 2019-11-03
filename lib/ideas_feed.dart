@@ -9,6 +9,7 @@ import 'package:in_app_purchase/billing_client_wrappers.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:infinideas/blocs/IdeasBloc.dart';
 import 'package:infinideas/models/idea.dart';
+import 'package:infinideas/favorites_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'about.dart';
@@ -259,9 +260,8 @@ class _IdeasFeedState extends State<IdeasFeed> {
                             icon: Icon(Icons.favorite_border),
                             color: getMenuIconColor(isDarkTheme()),
                             tooltip: 'Favourites',
-                            onPressed: () {
-                              //toggleTheme();
-                            },
+                            onPressed: () => Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (_) => FavoriteScreen())),
                           ),
                           IconButton(
                             icon: Icon(Icons.brightness_6),
