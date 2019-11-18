@@ -11,18 +11,20 @@ import 'package:infinideas/blocs/favorite_bloc.dart';
 
 class IdeaItem extends StatefulWidget {
 
-  IdeaItem({Key key, this.idea}) : super(key: key);
+  IdeaItem({Key key, this.idea, this.onFavoriteToggle}) : super(key: key);
   final Idea idea;
+  final VoidCallback onFavoriteToggle;
 
   @override
-  _IdeaItemState createState() => _IdeaItemState(this.idea);
+  _IdeaItemState createState() => _IdeaItemState(this.idea, this.onFavoriteToggle);
 }
 
 class _IdeaItemState extends State<IdeaItem> {
 
-  _IdeaItemState(this.idea);
+  _IdeaItemState(this.idea, this.onFavoriteToggle);
 
   final Idea idea;
+  final VoidCallback onFavoriteToggle;
   DarkTheme darkTheme;
   bool isFavorite = false;
 
@@ -97,10 +99,14 @@ class _IdeaItemState extends State<IdeaItem> {
   }
 
   void toggleFavoriteIcon(Idea idea) {
-    favoritesBloc.toggleIdea(idea);
+    //favoritesBloc.toggleIdea(idea);
+    //this.isFavorite = !this.isFavorite;
+    print("TAP on HEART!! =====> ");
     setState(() {
       this.isFavorite = !this.isFavorite;
     });
+    print(this.onFavoriteToggle);
+    this.onFavoriteToggle();
   }
 
   Future<void> _openWebView(BuildContext context, Idea idea, bool isDarkTheme) async {

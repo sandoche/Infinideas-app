@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:infinideas/blocs/IdeasBloc.dart';
+import 'package:infinideas/blocs/favorite_bloc.dart';
 import 'package:infinideas/models/dark_theme_handler.dart';
 import 'package:infinideas/models/idea.dart';
 import 'package:infinideas/favorites_screen.dart';
@@ -115,6 +116,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
                       } else {
                         return IdeaItem(
                           idea: snapshot.data[index],
+                          onFavoriteToggle: () => testing(snapshot.data[index]),
                         );
                       }
                     }, childCount: snapshot.data.length))
@@ -153,6 +155,11 @@ class _IdeasFeedState extends State<IdeasFeed> {
     }
   }
 
+  void testing(Idea idea) {
+    print("CLICK CALLBACK !!!");
+    favoritesBloc.toggleIdea(idea);
+  }
+
   Future toggleTheme() async {
     bool isPrimiumUnlocked = await this.primium.isPremiumUnlocked();
     if (isPrimiumUnlocked) {
@@ -186,7 +193,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
   void _openFavoritesPage(BuildContext context, bool isDarkTheme) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => FavoriteScreen(isDarkTheme: isDarkTheme)),
+      MaterialPageRoute(builder: (context) => FavoritesList(isDarkTheme: isDarkTheme)),
     );
   }
 

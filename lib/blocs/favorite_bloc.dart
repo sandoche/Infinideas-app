@@ -26,7 +26,7 @@ class FavoriteBloc implements Bloc {
   void toggleIdea(Idea idea) {
     var urls = _ideas.map((idea) => idea.url).toList();
     if (urls.contains(idea.url)) {
-      _ideas.remove(idea);
+      _ideas.removeWhere((item) => item.url == idea.url);
       ideas_db.deleteIdea(idea.url);
     } else {
       _ideas.add(idea);
