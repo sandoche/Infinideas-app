@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:infinideas/models/dark_theme_handler.dart';
 import 'package:infinideas/models/idea.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:infinideas/models/ideas_db.dart';
 import 'package:share/share.dart';
 import 'styles.dart';
 import 'themes.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'connectivity_check.dart';
-import 'package:infinideas/blocs/favorite_bloc.dart';
 
 class IdeaItem extends StatefulWidget {
 
   IdeaItem({Key key, this.idea, this.onFavoriteToggle}) : super(key: key);
   final Idea idea;
-  final VoidCallback onFavoriteToggle;
+  final void Function(bool) onFavoriteToggle;
 
   @override
   _IdeaItemState createState() => _IdeaItemState(this.idea, this.onFavoriteToggle);
@@ -24,7 +24,7 @@ class _IdeaItemState extends State<IdeaItem> {
   _IdeaItemState(this.idea, this.onFavoriteToggle);
 
   final Idea idea;
-  final VoidCallback onFavoriteToggle;
+  final void Function(bool) onFavoriteToggle;
   DarkTheme darkTheme;
   bool isFavorite = false;
 
@@ -36,7 +36,7 @@ class _IdeaItemState extends State<IdeaItem> {
   }
 
   Future <void> favoriteInitialState(Idea idea) async {
-    bool ideaExists = await favoritesBloc.ideaAlreadyExists(idea);
+    bool ideaExists = await IdeasDB.db.existIdeaWithUrl(idea.url); //avoritesBloc.ideaAlreadyExists(idea);
     setState(() {
       isFavorite = ideaExists;
     });
@@ -99,14 +99,10 @@ class _IdeaItemState extends State<IdeaItem> {
   }
 
   void toggleFavoriteIcon(Idea idea) {
-    //favoritesBloc.toggleIdea(idea);
-    //this.isFavorite = !this.isFavorite;
-    print("TAP on HEART!! =====> ");
     setState(() {
       this.isFavorite = !this.isFavorite;
     });
-    print(this.onFavoriteToggle);
-    this.onFavoriteToggle();
+    this.onFavoriteToggle(this.isFavorite);
   }
 
   Future<void> _openWebView(BuildContext context, Idea idea, bool isDarkTheme) async {
