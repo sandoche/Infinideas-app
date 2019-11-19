@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'ideas_feed.dart';
+import 'themes.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,9 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new DynamicTheme(
         defaultBrightness: Brightness.light,
-        data: (brightness) => new ThemeData(
-          brightness: brightness
-        ),
+        data: (brightness) => lightTheme,
         themedWidgetBuilder: (context, theme) {
           return MaterialApp(
             title: 'Infinideas',
@@ -23,4 +22,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
