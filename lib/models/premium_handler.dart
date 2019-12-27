@@ -11,7 +11,7 @@ class PremiumHandler {
         InAppPurchaseConnection.instance.purchaseUpdatedStream;
     return purchaseUpdates.listen((purchases) {
       if (purchases.length > 0) {
-        if (purchases[0].productID == "com.sandoche.infinideas.darkmode" &&
+        if (purchases[0].productID == "com.sandoche.infinideas.premium" &&
             purchases[0].status == PurchaseStatus.purchased) {
           if (Platform.isIOS) {
             InAppPurchaseConnection.instance.completePurchase(purchases[0]);
@@ -42,7 +42,7 @@ class PremiumHandler {
         await InAppPurchaseConnection.instance.queryPastPurchases();
         if (response.error == null && response.pastPurchases.length > 0) {
           for (var pastPurchase in response.pastPurchases) {
-            if (pastPurchase.productID == "com.sandoche.infinideas.darkmode") {
+            if (pastPurchase.productID == "com.sandoche.infinideas.premium") {
               savePremiumUnlocked();
               if (Platform.isIOS &&
                   pastPurchase.status == PurchaseStatus.purchased) {
@@ -59,7 +59,7 @@ class PremiumHandler {
     final bool available = await InAppPurchaseConnection.instance.isAvailable();
     if (available) {
       ProductDetails productDetails;
-      Set<String> productsIds = <String>['com.sandoche.infinideas.darkmode'].toSet();
+      Set<String> productsIds = <String>['com.sandoche.infinideas.premium'].toSet();
       final ProductDetailsResponse response = await InAppPurchaseConnection
           .instance
           .queryProductDetails(productsIds);

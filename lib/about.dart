@@ -28,7 +28,7 @@ class About extends StatelessWidget {
           await InAppPurchaseConnection.instance.queryPastPurchases();
       if (response.error == null && response.pastPurchases.length > 0) {
         for (var pastPurchase in response.pastPurchases) {
-          if (pastPurchase.productID == "com.sandoche.infinideas.darkmode") {
+          if (pastPurchase.productID == "com.sandoche.infinideas.premium") {
             saveDarkThemeUnlocked();
             if (Platform.isAndroid) {
               showDialog(
