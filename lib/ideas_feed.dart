@@ -31,7 +31,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
   StreamSubscription<List<PurchaseDetails>> _subscription;
   bool loadingNewItems = false;
   DarkTheme darkTheme;
-  PremiumHandler primium;
+  PremiumHandler premium;
 
   @override
   void dispose() {
@@ -45,7 +45,7 @@ class _IdeasFeedState extends State<IdeasFeed> {
     displayAlertWhenNoConnection(context);
     darkTheme = DarkTheme(context);
     darkTheme.setDefaultTheme();
-    primium = PremiumHandler();
+    premium = PremiumHandler();
     bloc.fetch(true);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -57,8 +57,8 @@ class _IdeasFeedState extends State<IdeasFeed> {
         });
       }
     });
-    _subscription = primium.getPurchaseSubscription();
-    primium.retrieveProducts();
+    _subscription = premium.getPurchaseSubscription();
+    premium.retrieveProducts();
   }
 
   @override
@@ -164,8 +164,8 @@ class _IdeasFeedState extends State<IdeasFeed> {
   }
 
   Future toggleTheme() async {
-    bool isPrimiumUnlocked = await this.primium.isPremiumUnlocked();
-    if (isPrimiumUnlocked) {
+    bool isPremiumUnlocked = await this.premium.isPremiumUnlocked();
+    if (isPremiumUnlocked) {
       darkTheme.switchTheme();
     } else {
       showUnlockPremiumAlert("Dark Theme");
@@ -173,8 +173,8 @@ class _IdeasFeedState extends State<IdeasFeed> {
   }
 
   Future clickOnFavorites() async {
-    bool isPrimiumUnlocked = await this.primium.isPremiumUnlocked();
-    if (isPrimiumUnlocked) {
+    bool isPremiumUnlocked = await this.premium.isPremiumUnlocked();
+    if (isPremiumUnlocked) {
       _openFavoritesPage(context, this.darkTheme.isDarkTheme());
     } else {
       showUnlockPremiumAlert("Favorites");
@@ -186,9 +186,9 @@ class _IdeasFeedState extends State<IdeasFeed> {
         context: context,
         builder: (BuildContext context) {
           if (Platform.isAndroid) {
-            return AlertsProvider(context).getAlertForAndroidPremium(primium, toUnlock);
+            return AlertsProvider(context).getAlertForAndroidPremium(premium, toUnlock);
           } else {
-            return AlertsProvider(context).getAlertForiOSPremium(primium, toUnlock);
+            return AlertsProvider(context).getAlertForiOSPremium(premium, toUnlock);
           }
         });
   }

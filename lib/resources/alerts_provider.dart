@@ -10,19 +10,19 @@ class AlertsProvider {
 
   AlertsProvider(this.context);
 
-  AlertDialog getAlertForAndroidPremium(PremiumHandler primium, String toUnlock) {
+  AlertDialog getAlertForAndroidPremium(PremiumHandler premium, String toUnlock) {
     return AlertDialog(
       title: _getUnlockTitle(toUnlock),
       content: _getUnlockContent(),
-      actions: _getUnlockActions(primium),
+      actions: _getUnlockActions(premium),
     );
   }
 
-  CupertinoAlertDialog getAlertForiOSPremium(PremiumHandler primium, String toUnlock) {
+  CupertinoAlertDialog getAlertForiOSPremium(PremiumHandler premium, String toUnlock) {
     return CupertinoAlertDialog(
       title: _getUnlockTitle(toUnlock),
       content: _getUnlockContent(),
-      actions: _getUnlockActions(primium),
+      actions: _getUnlockActions(premium),
     );
   }
 
@@ -35,7 +35,7 @@ class AlertsProvider {
         "Infinideas is a free app but in order to keep the app up to date we decided to sell the Premium version, that includes Dark Mode and Favorite ideas");
   }
 
-  _getUnlockActions(PremiumHandler primium) {
+  _getUnlockActions(PremiumHandler premium) {
     return <Widget>[
       FlatButton(
         child: const Text('Cancel'),
@@ -47,7 +47,7 @@ class AlertsProvider {
         child: const Text('Unlock Premium'),
         onPressed: () {
           Navigator.of(context).pop();
-          primium.purchaseItem();
+          premium.purchaseItem();
         },
       )
     ];
