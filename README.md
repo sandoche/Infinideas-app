@@ -1,6 +1,6 @@
 ![Logo](docs/logo.gif "Logo")
 
-# 💡 Infinideas ![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)
+# 💡 Infinideas
 
 **Infinite feed of crowdsourced ideas from Reddit and Twitter.**
 
