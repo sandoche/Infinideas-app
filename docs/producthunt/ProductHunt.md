@@ -22,4 +22,4 @@ That's how we came with this idea, Infinideas gathers crowdsourced ideas from th
 
 I personnally browse Infinideas everyday to check if there are not any interesting product to build next!
 
-Sandoche & Etienne
+Sandoche & Etienne & Patricia
