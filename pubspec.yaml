@@ -1,4 +1,4 @@
-name: infinidea
+name: infinideas
 description: Infinite feed of ideas
 
 # The following defines the version and build number for your application.
@@ -25,11 +25,23 @@ dependencies:
   share: ^0.6.1
   dynamic_theme: ^1.0.1
   timeago: ^2.0.17
+  url_launcher: ^5.1.0
+  connectivity: ^0.4.3+6
+  in_app_purchase: ^0.2.1+4
+  shared_preferences: ^0.5.3+4
+  intl: ^0.15.8
+  flutter_launcher_icons: ^0.7.2+1
+  sqflite:
+  path:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "docs/icon/icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'styles.dart';
 
 var lightTheme = new ThemeData(
+    appBarTheme: AppBarTheme(
+      color: Color(0xff65638f),
+    ),
     brightness: Brightness.light,
-    accentColor: Colors.red
+    accentColor: Colors.blue,
 );
 
 var darkTheme = new ThemeData(
@@ -37,6 +40,14 @@ getSliverAppBarTitleStyle(isDarkmode) {
   }
 }
 
+getAppBarBrightness(isDarkmode) {
+  if(isDarkmode) {
+    return Brightness.dark;
+  } else {
+    return Brightness.light;
+  }
+}
+
 getMenuIconColor(isDarkmode) {
   if(isDarkmode) {
     return Colors.white;
@@ -66,5 +77,29 @@ getMenuTextStyle(isDarkmode) {
     return STYLE_TEXT_DARK_THEME;
   } else {
     return COLOR_PRIMARY;
+  }
+}
+
+getTextStyle(isDarkmode) {
+  if(isDarkmode) {
+    return STYLE_APP_TITLE_DARK_THEME;
+  } else {
+    return STYLE_APP_TITLE_LIGHT_THEME;
+  }
+}
+
+getStyleAboutText(isDarkmode) {
+  if(isDarkmode) {
+    return STYLE_TEXT_DARK_THEME;
+  } else {
+    return STYLE_TEXT_LIGHT_THEME;
+  }
+}
+
+getStyleAboutMenu(isDarkmode) {
+  if(isDarkmode) {
+    return STYLE_ABOUT_TEXT_DARK_THEME;
+  } else {
+    return STYLE_ABOUT_TEXT_LIGHT_THEME;
   }
 }
