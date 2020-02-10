@@ -19,7 +19,7 @@ Current ideas sources:
 We like to explore and build new products, but sometimes we don't know what are other people's problems. We were wondering how to get the ideas from people's minds and the closest answer we got was to look for them in social media and the web.
 That's how we came with this app.
 
-We personnally browse Infinideas everyday to check if there are any interesting products to build next, and we are loving it ❤️!
+We personally browse Infinideas everyday to check if there are any interesting products to build next, and we are loving it ❤️!
 
 We decided to make Infinideas as a mobile app in Flutter because we like to learn something new with any new product we make 🤓 If you are interested in learning Flutter you might want to read our feedback: https://medium.com/learning-lab/flutter-vs-nativescript-a-web-developers-perspective-1e9d4b9d8ad9
 
