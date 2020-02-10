@@ -12,12 +12,16 @@ Current ideas sources:
 - Reddit
 - Twitter
 
-*🍎 The AppStore refused our app, so if you want to try on your iphone, clone this and compile it, that's why we kept it open source !*
+*🍎 The AppStore refused our app, so if you want to try on your iphone, clone this and compile it, that's why we kept it open source!*
 
 ## ☝️ Why this app ?
 
-We were wondering how to get the ideas people had in mind? the closest answer I got was to look for them in the social media.
-Also we heard a lot about flutter and we wanted to give a try, here what m feedback: https://medium.com/learning-lab/flutter-vs-nativescript-a-web-developers-perspective-1e9d4b9d8ad9
+We like to explore and build new products, but sometimes we don't know what are other people's problems. We were wondering how to get the ideas from people's minds and the closest answer we got was to look for them in social media and the web.
+That's how we came with this app.
+
+We personnally browse Infinideas everyday to check if there are any interesting products to build next, and we are loving it ❤️!
+
+We decided to make Infinideas as a mobile app in Flutter because we like to learn something new with any new product we make 🤓 If you are interested in learning Flutter you might want to read our feedback: https://medium.com/learning-lab/flutter-vs-nativescript-a-web-developers-perspective-1e9d4b9d8ad9
 
 ## 📲 Download
 
@@ -25,7 +29,7 @@ Also we heard a lot about flutter and we wanted to give a try, here what m feedb
 
 ## 🚨 Disclaimer
 We did this app very fast to test Flutter for our first time.
-The code quality is pretty bad, we are aware of that, we are not proud at all because it does not meet our code quality standard 🙈😬
+The code quality is pretty bad, we are aware of that, we are not proud at all because it does not meet our code quality standards 🙈😬
 
 ## ⭐️ Show your support
 Please ⭐️ this repository if this project helped you!
