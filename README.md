@@ -23,6 +23,10 @@ Also we heard a lot about flutter and we wanted to give a try, here what m feedb
 
 <a href="https://play.google.com/store/apps/details?id=com.sandoche.infinideas"><img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="60"></a>
 
+## 🚨 Disclaimer
+We did this app very fast to test Flutter for our first time.
+The code quality is pretty bad, we are aware of that, we are not proud at all because it does not meet our code quality standard 🙈😬
+
 ## ⭐️ Show your support
 Please ⭐️ this repository if this project helped you!
 
