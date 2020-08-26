@@ -2,6 +2,9 @@
 
 # 💡 Infinideas
 
+[![Medium Badge](https://badgen.net/badge/icon/medium?icon=medium&label)](https://medium.com/@sandoche)
+[![Twitter: sandochee](https://img.shields.io/twitter/follow/sandochee.svg?style=social)](https://twitter.com/sandochee)
+
 **Infinite feed of crowdsourced ideas from Reddit and Twitter.**
 
 Explore and keep discovering startup ideas, app ideas or business ideas, every day or even every hour.
